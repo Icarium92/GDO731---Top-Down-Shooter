@@ -72,7 +72,7 @@ public class Player_AbilityController : MonoBehaviour
                 return new DashAbility(data, player);
             //case AbilityType.HeavyAttack:
             //    return new HeavyAttackAbility(data, player);
-            // case AbilityType.Grenade:
+            //case AbilityType.Grenade:
             //    return new GrenadeAbility(data, player);
             // case AbilityType.Stealth:
             //    return new StealthAbility(data, player);
