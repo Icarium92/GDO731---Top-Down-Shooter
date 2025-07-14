@@ -6675,6 +6675,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1150053483}
+  - {fileID: 1511349536}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &998103239
@@ -7871,13 +7872,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Grenade
-  Cooldown: 0
-  CooldownTimer: 0
+  Cooldown: 5
+  CooldownTimer: 5
   IsOnCooldown: 0
   OnFire:
     m_PersistentCalls:
       m_Calls: []
-  AbilityCountMax: 1
+  AbilityCountMax: 15
   AbilityCount: 15
   HasAbilityCount: 1
   AbilityPrefab: {fileID: 0}
@@ -7893,9 +7894,9 @@ MonoBehaviour:
   onStyleDecrease:
     m_PersistentCalls:
       m_Calls: []
-  AOESpellDamage: 20
+  AOESpellDamage: 5
   damageParticles: {fileID: 4596544553357837919, guid: 9a106fb451df5f94dabb551719946673, type: 3}
-  layer: 8
+  layer: 11
   castRadius: 3
 --- !u!4 &1154133467 stripped
 Transform:
@@ -10487,6 +10488,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 204700767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1511349535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1511349536}
+  - component: {fileID: 1511349537}
+  m_Layer: 0
+  m_Name: Trap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1511349536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511349535}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985607934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1511349537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511349535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51690c0ed766d5f4b8cea8e52cfddd74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Trap
+  Cooldown: 5
+  CooldownTimer: 5
+  IsOnCooldown: 0
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  AbilityCountMax: 5
+  AbilityCount: 5
+  HasAbilityCount: 1
+  AbilityPrefab: {fileID: 236936825191486153, guid: f042930aedc1b9341b29ee458ef4fa9c, type: 3}
 --- !u!1 &1514818414
 GameObject:
   m_ObjectHideFlags: 0
@@ -12748,6 +12804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilities:
   - {fileID: 1150053484}
+  - {fileID: 1511349537}
   testTransform: {fileID: 2082195583}
   fixedTransform: {fileID: 0}
   onStyleIncrease:
@@ -12800,6 +12857,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c7bb63cd-771f-4385-82f3-756290bff3ca
     m_ActionName: 'Abilities/Ability[/Keyboard/q]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1746550284}
+        m_TargetAssemblyTypeName: AbilityHandler, Assembly-CSharp
+        m_MethodName: OnAbility2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c8ce31e0-11e7-48ae-8c31-8d6d9c1ed0f7
+    m_ActionName: 'Abilities/Ability2[/Keyboard/e]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Abilities

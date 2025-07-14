@@ -35,14 +35,16 @@ public class AbilityAOESpell : AbilityBaseClass
 
         foreach (Collider c in colliders)
         {
-            if (c.TryGetComponent<Enemy>(out Enemy enemy))
+            if (c.TryGetComponent<IDamagable>(out IDamagable enemy))
             {
                 if (enemy != null)
                 {
-                    Debug.Log("enemyhit");
+                    enemy.TakeDamage(AOESpellDamage);
                 }
             }
         }
+
+        Debug.Log(hits);
 
         switch (hits)
         {
