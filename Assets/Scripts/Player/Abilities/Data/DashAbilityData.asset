@@ -22,7 +22,7 @@ MonoBehaviour:
   inputKey: 32
   trailEffectPrefab: {fileID: 0}
   particleEffectPrefab: {fileID: 0}
-  activationEffectPrefab: {fileID: 8835700486866266804, guid: 4188612c9d12a0542b9491ea831b139a, type: 3}
+  activationEffectPrefab: {fileID: 0}
   ongoingEffectPrefab: {fileID: 0}
   activationSound: {fileID: 0}
   ongoingSound: {fileID: 0}
