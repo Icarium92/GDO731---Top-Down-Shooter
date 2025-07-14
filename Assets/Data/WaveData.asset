@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32af79283460d44e855253592985591, type: 3}
+  m_Name: WaveData
+  m_EditorClassIdentifier: 
+  baseEnemyCount: 2
+  enemyCountMultiplier: 1.2
+  enemyHealthMultiplier: 1
+  enemySpeedMultiplier: 1
+  waveInterval: 5
+  enemyPrefabs:
+  - {fileID: 5957605082017663771, guid: c6f7c97c0776f5545820ad52b6aeba38, type: 3}
+  - {fileID: 1316571440960610406, guid: a60407b8a6a86714d80c91866e7b12fe, type: 3}
+  bossPrefabs:
+  - {fileID: 5522898272314983028, guid: 331ca337b3b39aa4e97d96ae844a487d, type: 3}
+  - {fileID: 7364281645933512702, guid: a02d3f5acaa542e4f8a453a3bc7e1916, type: 3}
+  spawnPoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 0}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: -2}
