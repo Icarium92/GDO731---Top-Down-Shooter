@@ -124,11 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04e197b1620460945ad6afca2a28e9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trapInitialization: 1.5
+  trapInitialization: 0
   statusDuration: 4
-  OnStyleLevel:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7008724665248824434
 GameObject:
   m_ObjectHideFlags: 0
