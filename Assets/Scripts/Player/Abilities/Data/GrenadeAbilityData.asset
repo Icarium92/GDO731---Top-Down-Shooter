@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e5422afc8b4fc4192611ddaf99830b, type: 3}
+  m_Name: GrenadeAbilityData
+  m_EditorClassIdentifier: 
+  abilityName: GrenadeAbilityData
+  description: 
+  type: 2
+  icon: {fileID: 0}
+  cooldown: 0
+  duration: 0
+  castTime: 0
+  inputKey: 113
+  trailEffectPrefab: {fileID: 0}
+  particleEffectPrefab: {fileID: 0}
+  activationEffectPrefab: {fileID: 5866813730763450495, guid: 4ef4695b41e3b994682d08bda65871e5, type: 3}
+  ongoingEffectPrefab: {fileID: 0}
+  activationSound: {fileID: 0}
+  ongoingSound: {fileID: 0}
+  useScreenShake: 0
+  shakeIntensity: 0.1
+  shakeDuration: 0.1
+  canUseWhileMoving: 1
+  canUseWhileAttacking: 1
+  interruptsOtherAbilities: 0

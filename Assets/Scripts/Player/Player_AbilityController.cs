@@ -72,8 +72,8 @@ public class Player_AbilityController : MonoBehaviour
                 return new DashAbility(data, player);
             //case AbilityType.HeavyAttack:
             //    return new HeavyAttackAbility(data, player);
-            // case AbilityType.Grenade:
-            //    return new GrenadeAbility(data, player);
+             case AbilityType.Grenade:
+                return new GrenadeAbility(data, player);
             // case AbilityType.Stealth:
             //    return new StealthAbility(data, player);
             //case AbilityType.Ultimate:
@@ -107,6 +107,11 @@ public class Player_AbilityController : MonoBehaviour
             bool success = TryActivateAbility(AbilityType.Dash);
             Debug.Log($"Dash activation result: {success}"); // Temporary debug
         }
+        if (player.controls.Character.Grenade.triggered)
+        {
+            TryActivateAbility(AbilityType.Grenade);
+        }
+        //might need amending
     }
 
     private void HandleKeyCodeInput()
