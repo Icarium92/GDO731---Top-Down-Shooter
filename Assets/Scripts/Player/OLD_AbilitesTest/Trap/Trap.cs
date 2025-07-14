@@ -21,7 +21,7 @@ public class Trap : MonoBehaviour
         {
             HitBox enemyHitbox = other.GetComponent<HitBox>();
 
-            if(enemyHitbox != null)
+            if(enemyHitbox.EnemyHit() != null)
             {
                 _trapEnemy = enemyHitbox.EnemyHit();
                 StartCoroutine(TrapInitialization());
