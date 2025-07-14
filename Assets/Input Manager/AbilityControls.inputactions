@@ -1,0 +1,34 @@
+{
+    "name": "AbilityControls",
+    "maps": [
+        {
+            "name": "Abilities",
+            "id": "f0e4a4cd-4449-4181-860a-872ca4cb696f",
+            "actions": [
+                {
+                    "name": "Ability",
+                    "type": "Button",
+                    "id": "c7bb63cd-771f-4385-82f3-756290bff3ca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0d4aea68-9da4-41da-8c26-e2f57b83535d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

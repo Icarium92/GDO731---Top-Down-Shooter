@@ -6645,6 +6645,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1037724451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &985607933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 985607934}
+  m_Layer: 0
+  m_Name: TestAbility
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &985607934
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985607933}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.032916546, y: -16.228281, z: 27.732973}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1150053483}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &998103239
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7794,6 +7826,77 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1158447124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1150053482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1150053483}
+  - component: {fileID: 1150053484}
+  m_Layer: 0
+  m_Name: Grenade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1150053483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150053482}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985607934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150053484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150053482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55eba28b42781664f8943c79dfed596f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Grenade
+  Cooldown: 0
+  CooldownTimer: 0
+  IsOnCooldown: 0
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  AbilityCountMax: 1
+  AbilityCount: 15
+  HasAbilityCount: 1
+  AbilityPrefab: {fileID: 0}
+  onStyleIncrease:
+    m_PersistentCalls:
+      m_Calls: []
+  onStyleLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onStyleBoost:
+    m_PersistentCalls:
+      m_Calls: []
+  onStyleDecrease:
+    m_PersistentCalls:
+      m_Calls: []
+  AOESpellDamage: 20
+  damageParticles: {fileID: 4596544553357837919, guid: 9a106fb451df5f94dabb551719946673, type: 3}
+  layer: 8
+  castRadius: 3
 --- !u!4 &1154133467 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7342507800261643077, guid: e0b33daac2b36694da06fce2327245fd, type: 3}
@@ -12417,6 +12520,8 @@ GameObject:
   - component: {fileID: 1746550280}
   - component: {fileID: 1746550281}
   - component: {fileID: 1746550275}
+  - component: {fileID: 1746550284}
+  - component: {fileID: 1746550285}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -12628,8 +12733,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableAbilities:
   - {fileID: 11400000, guid: b1d131851e096b54e8df8f01335b071c, type: 2}
-  - {fileID: 11400000, guid: 695f42cbd16d9dd4893f6507572671e5, type: 2}
   useInputActions: 1
+--- !u!114 &1746550284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746550269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4963e09de913e459a5d13167e998fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilities:
+  - {fileID: 1150053484}
+  testTransform: {fileID: 2082195583}
+  fixedTransform: {fileID: 0}
+  onStyleIncrease:
+    m_PersistentCalls:
+      m_Calls: []
+  onStyleDecrease:
+    m_PersistentCalls:
+      m_Calls: []
+  maxAbilityDistance: 7
+  sphereColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  castRadius: 1
+--- !u!114 &1746550285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746550269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: dcc3fc334e0eb7d418cf3509224ab920, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1746550284}
+        m_TargetAssemblyTypeName: AbilityHandler, Assembly-CSharp
+        m_MethodName: OnAbility
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c7bb63cd-771f-4385-82f3-756290bff3ca
+    m_ActionName: 'Abilities/Ability[/Keyboard/q]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Abilities
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &1746982451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1470273907682418816, guid: 89ce90a311f45584f96e199ee411f64d, type: 3}
@@ -15331,6 +15506,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5507751349985238819, guid: e617c0d5cd6b2cc45b8fba5307df193b, type: 3}
   m_PrefabInstance: {fileID: 533294138}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2082195582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2082195583}
+  m_Layer: 0
+  m_Name: TestTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2082195583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082195582}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2083651006
 GameObject:
   m_ObjectHideFlags: 0
@@ -22308,3 +22514,5 @@ SceneRoots:
   - {fileID: 1567743234}
   - {fileID: 1174999166}
   - {fileID: 917049980}
+  - {fileID: 985607934}
+  - {fileID: 2082195583}

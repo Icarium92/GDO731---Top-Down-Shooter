@@ -61,6 +61,7 @@ public class AbilityHandler : MonoBehaviour
     {
         if (context.performed)
         {
+            Debug.Log("ability used");
             UseAbilityRadius(0);
         }
     }

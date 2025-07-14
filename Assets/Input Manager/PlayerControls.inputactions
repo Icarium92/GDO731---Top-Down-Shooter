@@ -130,15 +130,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Grenade",
-                    "type": "Button",
-                    "id": "d9a599e9-a2e1-480b-a7d6-b7d91bc22d6f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -337,17 +328,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d747c2fa-fb00-4ff9-bb6b-cc6bccf39cd7",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Grenade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

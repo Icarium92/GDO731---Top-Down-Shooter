@@ -152,15 +152,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Grenade"",
-                    ""type"": ""Button"",
-                    ""id"": ""d9a599e9-a2e1-480b-a7d6-b7d91bc22d6f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -361,17 +352,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d747c2fa-fb00-4ff9-bb6b-cc6bccf39cd7"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Grenade"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -394,7 +374,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_ToogleWeaponMode = m_Character.FindAction("Toogle Weapon Mode", throwIfNotFound: true);
         m_Character_Interaction = m_Character.FindAction("Interaction", throwIfNotFound: true);
         m_Character_Dash = m_Character.FindAction("Dash", throwIfNotFound: true);
-        m_Character_Grenade = m_Character.FindAction("Grenade", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -470,7 +449,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_ToogleWeaponMode;
     private readonly InputAction m_Character_Interaction;
     private readonly InputAction m_Character_Dash;
-    private readonly InputAction m_Character_Grenade;
     public struct CharacterActions
     {
         private @PlayerControls m_Wrapper;
@@ -489,7 +467,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ToogleWeaponMode => m_Wrapper.m_Character_ToogleWeaponMode;
         public InputAction @Interaction => m_Wrapper.m_Character_Interaction;
         public InputAction @Dash => m_Wrapper.m_Character_Dash;
-        public InputAction @Grenade => m_Wrapper.m_Character_Grenade;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -541,9 +518,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
-            @Grenade.started += instance.OnGrenade;
-            @Grenade.performed += instance.OnGrenade;
-            @Grenade.canceled += instance.OnGrenade;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -590,9 +564,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
-            @Grenade.started -= instance.OnGrenade;
-            @Grenade.performed -= instance.OnGrenade;
-            @Grenade.canceled -= instance.OnGrenade;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -626,6 +597,5 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnToogleWeaponMode(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
-        void OnGrenade(InputAction.CallbackContext context);
     }
 }
