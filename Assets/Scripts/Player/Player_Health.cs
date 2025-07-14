@@ -4,29 +4,33 @@ using UnityEngine;
 
 public class Player_Health : HealthController
 {
-    private Player player;
-
     public bool isDead { get; private set; }
-    private bool isInvincible = false; // NEW: For ability system integration
+    private bool isInvincible = false;
+
+    private Player player;
 
     protected override void Awake()
     {
         base.Awake();
-
         player = GetComponent<Player>();
     }
 
     public override void ReduceHealth(int damage)
     {
-        if (isInvincible) return; // NEW: Ability system integration
+        if (isInvincible) return;
 
         base.ReduceHealth(damage);
+
+        // NEW: Update health bar when taking damage (same as enemy approach)
+        if (player.healthBar != null)
+        {
+            player.healthBar.value = currentHealth;
+        }
 
         if (ShouldDie())
             Die();
     }
 
-    // NEW: Method for ability system integration
     public void SetInvincible(bool invincible)
     {
         isInvincible = invincible;

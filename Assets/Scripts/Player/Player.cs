@@ -1,7 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI; // NEW: Add this for UI components
 
 public class Player : MonoBehaviour
 {
+    [Header("Health Bar")] // NEW: Add health bar section
+    public Slider healthBar;
+    [Space]
+
     public Transform playerBody;
 
     public PlayerControls controls { get; private set; }
@@ -29,12 +34,7 @@ public class Player : MonoBehaviour
         weapon = GetComponent<Player_WeaponController>();
         weaponVisuals = GetComponent<Player_WeaponVisuals>();
         interaction = GetComponent<Player_Interaction>();
-
-        // Initialize abilities AFTER other components
         abilities = GetComponent<Player_AbilityController>();
-
-        // Debug logging to verify component initialization
-        Debug.Log($"Player Awake - Health: {health != null}, Movement: {movement != null}");
 
         if (playerBody == null)
         {
@@ -48,6 +48,17 @@ public class Player : MonoBehaviour
         if (health == null) Debug.LogWarning("Player: Player_Health not found.");
         if (movement == null) Debug.LogWarning("Player: Player_Movement not found.");
         if (abilities == null) Debug.LogWarning("Player: Player_AbilityController not found.");
+    }
+
+    // NEW: Add Start method for health bar initialization
+    private void Start()
+    {
+        // Initialize health bar (same as enemy approach)
+        if (healthBar != null && health != null)
+        {
+            healthBar.maxValue = health.maxHealth;
+            healthBar.value = health.currentHealth;
+        }
     }
 
     private void OnEnable()
