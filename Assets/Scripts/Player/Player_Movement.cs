@@ -19,6 +19,7 @@ public class Player_Movement : MonoBehaviour
     private Vector3 movementDirection;
 
     private bool isRunning;
+    private bool movementEnabled = true; // NEW: For ability system integration
 
     private void Start()
     {
@@ -29,10 +30,8 @@ public class Player_Movement : MonoBehaviour
 
         speed = walkSpeed;
 
-
         AssignInputEvents();
     }
-
 
     private void Update()
     {
@@ -55,6 +54,7 @@ public class Player_Movement : MonoBehaviour
         bool playRunAnimation = isRunning & movementDirection.magnitude > 0;
         animator.SetBool("isRunning", playRunAnimation);
     }
+
     private void ApplyRotation()
     {
         Vector3 lookingDirection = player.aim.GetMouseHitInfo().point - transform.position;
@@ -63,10 +63,12 @@ public class Player_Movement : MonoBehaviour
 
         Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, turnSpeed * Time.deltaTime);
-
     }
+
     private void ApplyMovement()
     {
+        if (!movementEnabled) return; // NEW: Ability system integration
+
         movementDirection = new Vector3(moveInput.x, 0, moveInput.y);
         ApplyGravity();
 
@@ -75,6 +77,7 @@ public class Player_Movement : MonoBehaviour
             characterController.Move(movementDirection * Time.deltaTime * speed);
         }
     }
+
     private void ApplyGravity()
     {
         if (characterController.isGrounded == false)
@@ -85,6 +88,13 @@ public class Player_Movement : MonoBehaviour
         else
             verticalVelocity = -.5f;
     }
+
+    // NEW: Method for ability system integration
+    public void SetMovementEnabled(bool enabled)
+    {
+        movementEnabled = enabled;
+    }
+
     private void AssignInputEvents()
     {
         controls = player.controls;
@@ -97,7 +107,6 @@ public class Player_Movement : MonoBehaviour
             speed = runSpeed;
             isRunning = true;
         };
-
 
         controls.Character.Run.canceled += context =>
         {

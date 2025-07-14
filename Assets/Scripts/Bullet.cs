@@ -74,7 +74,7 @@ public class Bullet : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (FriendlyFare() == false)
+        if (FriendlyFire() == false)
         {
             // Use a bitwise AND to check if the collsion layer is in the allyLayerMask
             if ((allyLayerMask.value & (1 << collision.gameObject.layer)) > 0)
@@ -119,5 +119,5 @@ public class Bullet : MonoBehaviour
         ObjectPool.instance.ReturnObject(newImpactFx, 1);
     }
 
-    private bool FriendlyFare() => GameManager.Instance.friendlyFire;
+    private bool FriendlyFire() => GameManager.Instance.friendlyFire;
 }

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Player_WeaponVisuals weaponVisuals { get; private set; }
     public Player_Interaction interaction { get; private set; }
     public Player_Health health { get; private set; }
+    public Player_AbilityController abilities { get; private set; }
     public Ragdoll ragdoll { get; private set; }
 
     public Animator anim { get; private set; }
@@ -19,14 +20,21 @@ public class Player : MonoBehaviour
     {
         controls = new PlayerControls();
 
+        // Initialize components first
         anim = GetComponentInChildren<Animator>();
         ragdoll = GetComponent<Ragdoll>();
         health = GetComponent<Player_Health>();
-        aim = GetComponent<Player_AimController>();
         movement = GetComponent<Player_Movement>();
+        aim = GetComponent<Player_AimController>();
         weapon = GetComponent<Player_WeaponController>();
         weaponVisuals = GetComponent<Player_WeaponVisuals>();
         interaction = GetComponent<Player_Interaction>();
+
+        // Initialize abilities AFTER other components
+        abilities = GetComponent<Player_AbilityController>();
+
+        // Debug logging to verify component initialization
+        Debug.Log($"Player Awake - Health: {health != null}, Movement: {movement != null}");
 
         if (playerBody == null)
         {
@@ -38,13 +46,15 @@ public class Player : MonoBehaviour
         if (anim == null) Debug.LogWarning("Player: Animator not found.");
         if (ragdoll == null) Debug.LogWarning("Player: Ragdoll not found.");
         if (health == null) Debug.LogWarning("Player: Player_Health not found.");
-        // ...add more as needed
+        if (movement == null) Debug.LogWarning("Player: Player_Movement not found.");
+        if (abilities == null) Debug.LogWarning("Player: Player_AbilityController not found.");
     }
 
     private void OnEnable()
     {
         controls.Enable();
     }
+
     private void OnDisable()
     {
         controls.Disable();
