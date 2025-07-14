@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player_Health : HealthController
 {
     private Player player;
+
+    public UnityEvent OnPlayerDeath;
 
     public bool isDead { get; private set; }
     private bool isInvincible = false; // NEW: For ability system integration
@@ -41,5 +44,6 @@ public class Player_Health : HealthController
         isDead = true;
         player.anim.enabled = false;
         player.ragdoll.RagdollActive(true);
+        OnPlayerDeath?.Invoke();
     }
 }
