@@ -4,7 +4,7 @@ using System.Collections;
 public class DashAbility : BaseAbility
 {
     [Header("Dash Settings")]
-    private float dashDistance = 3f;
+    private float dashDistance = 2f;
     private float dashSpeed = 20f;
     private LayerMask obstacles = -1;
 
