@@ -21,7 +21,15 @@ public class DeadState_Boss : EnemyState
         interactionDisabled = false;
 
         enemy.anim.enabled = false;
-        enemy.agent.isStopped = true;
+
+        if (enemy.agent != null && enemy.agent.isActiveAndEnabled && enemy.agent.isOnNavMesh)
+        {
+            enemy.agent.isStopped = true;
+        }
+        else
+        {
+            Debug.LogWarning("NavMeshAgent not valid for stopping in DeadState_Melee - skipping");
+        }
 
         enemy.ragdoll.RagdollActive(true);
 
