@@ -25,8 +25,19 @@ public class AbilityHandler : MonoBehaviour
     private Ray ray;
     private RaycastHit hit;
 
+
+    [Header("UI")]
+    [SerializeField] private Canvas abilityCanvas;
+    [SerializeField] private Image rangeIndicator;
+    private bool canShowRange;
+
     public Color sphereColor = Color.yellow;
     public float castRadius;
+
+    private void Awake()
+    {
+        rangeIndicator.enabled = false;
+    }
 
     private void Update()
     {
@@ -55,14 +66,26 @@ public class AbilityHandler : MonoBehaviour
 
         var newHitPos = transform.position + hitPosDir * distance;
         testTransform.position = (newHitPos);
+
+        if (canShowRange)
+        {
+            abilityCanvas.transform.position = (newHitPos);
+        }
     }
 
     public void OnAbility(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Debug.Log("ability used");
+            canShowRange = true;
+            rangeIndicator.enabled = true;
+        }
+
+        if (context.canceled)
+        {
             UseAbilityRadius(0);
+            canShowRange = false;
+            rangeIndicator.enabled = false;
         }
     }
 
@@ -70,7 +93,15 @@ public class AbilityHandler : MonoBehaviour
     {
         if (context.performed)
         {
+            canShowRange = true;
+            rangeIndicator.enabled = true;
+        }
+
+        if (context.canceled)
+        {
             UseAbilityRadius(1);
+            canShowRange = false;
+            rangeIndicator.enabled = false;
         }
     }
 
