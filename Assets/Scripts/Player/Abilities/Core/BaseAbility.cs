@@ -26,15 +26,20 @@ public abstract class BaseAbility : IAbility
         bool hasResources = HasRequiredResources();
         bool meetsConditions = MeetsActivationConditions();
 
-        Debug.Log($"Base CanActivate - State: {State}, OnCooldown: {isOnCooldown}, HasResources: {hasResources}, MeetsConditions: {meetsConditions}");
+        Debug.Log($"BaseAbility CanActivate - State: {State}, OnCooldown: {isOnCooldown}, HasResources: {hasResources}, MeetsConditions: {meetsConditions}");
 
         return stateReady && notOnCooldown && hasResources && meetsConditions;
     }
 
     public virtual void Activate()
     {
-        if (!CanActivate()) return;
+        if (!CanActivate())
+        {
+            Debug.Log($"BaseAbility: Cannot activate {GetType().Name}");
+            return;
+        }
 
+        Debug.Log($"BaseAbility: Activating {GetType().Name}");
         State = AbilityState.Activating;
         ConsumeResources();
         PlayActivationEffects();
@@ -76,13 +81,11 @@ public abstract class BaseAbility : IAbility
 
     protected virtual bool HasRequiredResources()
     {
-        // Override in derived classes for resource checking
         return true;
     }
 
     protected virtual bool MeetsActivationConditions()
     {
-        // Override in derived classes for specific conditions
         return true;
     }
 
@@ -93,7 +96,6 @@ public abstract class BaseAbility : IAbility
 
     protected virtual void PlayActivationEffects()
     {
-        // CORRECT - Use the actual field name
         if (Data.activationEffectPrefab != null)
         {
             GameObject effect = ObjectPool.instance.GetObject(Data.activationEffectPrefab, player.transform);

@@ -3,43 +3,69 @@ using System.Collections;
 
 public class DashAbility : BaseAbility
 {
-    [Header("Dash Settings")]
-    private float dashDistance = 2.5f;
-    private float dashSpeed = 15f;
-    private LayerMask obstacles = -1;
-
     private CharacterController characterController;
     private Player_Movement movement;
     private Player_Health health;
     private Vector3 dashDirection;
     private bool isDashing;
     private float currentDashDistance;
+    private SkillManager skillManager;
 
     // Dynamic effect references
     private GameObject activeTrailEffect;
     private GameObject activeParticleEffect;
     private string abilityId;
 
-    public DashAbility(AbilityData data, Player player) : base(data, player)
+    public DashAbility(AbilityData data, Player player, SkillManager skillManager) : base(data, player)
     {
-        characterController = player.GetComponent<CharacterController>();
-        movement = player.movement;
-        health = player.health;
+        this.skillManager = skillManager;
 
-        // Create unique ability ID for effect tracking
+        // Override the cooldown from AbilityData with SkillManager's setting
+        this.Data.cooldown = skillManager.dashCooldown;
+
+        characterController = player.GetComponent<CharacterController>();
+        movement = player.movement ?? player.GetComponent<Player_Movement>();
+        health = player.health ?? player.GetComponent<Player_Health>();
         abilityId = $"Dash_{player.GetInstanceID()}";
+
+        Debug.Log($"DashAbility created - Distance: {skillManager.dashDistance}, Speed: {skillManager.dashSpeed}, Cooldown: {skillManager.dashCooldown}");
+
+        if (movement == null) Debug.LogError("DashAbility: Could not find Player_Movement component!");
+        if (health == null) Debug.LogError("DashAbility: Could not find Player_Health component!");
+    }
+
+    protected override void CompleteAbility()
+    {
+        // Update cooldown from SkillManager in case it was changed during gameplay
+        Data.cooldown = skillManager.dashCooldown;
+
+        // Call base implementation to start cooldown
+        base.CompleteAbility();
+
+        Debug.Log($"Dash completed! Cooldown started: {Data.cooldown}s");
+    }
+
+    public override bool CanActivate()
+    {
+        var baseCanActivate = base.CanActivate();
+        var customConditions = MeetsActivationConditions();
+
+        return baseCanActivate && customConditions;
     }
 
     protected override bool MeetsActivationConditions()
     {
-        return !isDashing &&
-               health != null && !health.isDead &&
-               movement != null &&
-               characterController != null;
+        bool notDashing = !isDashing;
+        bool healthOk = health != null && !health.isDead;
+        bool movementOk = movement != null;
+        bool controllerOk = characterController != null;
+
+        return notDashing && healthOk && movementOk && controllerOk;
     }
 
     protected override void OnAbilityExecute()
     {
+        Debug.Log("Executing Dash Ability!");
         CalculateDashDirection();
         CalculateActualDashDistance();
         player.StartCoroutine(PerformDash());
@@ -52,6 +78,7 @@ public class DashAbility : BaseAbility
 
     protected override void OnAbilityComplete()
     {
+        Debug.Log("Dash completed!");
         isDashing = false;
 
         // Re-enable movement
@@ -68,30 +95,34 @@ public class DashAbility : BaseAbility
 
     private void CalculateDashDirection()
     {
-        Vector3 inputDirection = new Vector3(
-            movement.moveInput.x,
-            0,
-            movement.moveInput.y
-        ).normalized;
+        Vector3 inputDirection = Vector3.zero;
+
+        if (movement != null && movement.moveInput != Vector2.zero)
+        {
+            inputDirection = new Vector3(
+                movement.moveInput.x,
+                0,
+                movement.moveInput.y
+            ).normalized;
+        }
 
         dashDirection = inputDirection != Vector3.zero ? inputDirection : player.transform.forward;
     }
 
     private void CalculateActualDashDistance()
     {
-        currentDashDistance = dashDistance;
+        currentDashDistance = skillManager.dashDistance;
 
-        if (Physics.Raycast(player.transform.position, dashDirection, dashDistance, obstacles))
+        if (Physics.Raycast(player.transform.position, dashDirection, skillManager.dashDistance, skillManager.dashObstacles))
         {
             RaycastHit hit;
-            Physics.Raycast(player.transform.position, dashDirection, out hit, dashDistance, obstacles);
+            Physics.Raycast(player.transform.position, dashDirection, out hit, skillManager.dashDistance, skillManager.dashObstacles);
             currentDashDistance = Mathf.Max(hit.distance - 0.5f, 1f);
         }
     }
 
     private void EnableEffects()
     {
-        // Spawn trail effect
         if (Data.trailEffectPrefab != null)
         {
             activeTrailEffect = AbilityEffectManager.Instance.SpawnEffect(
@@ -101,7 +132,6 @@ public class DashAbility : BaseAbility
             );
         }
 
-        // Spawn particle effect
         if (Data.particleEffectPrefab != null)
         {
             activeParticleEffect = AbilityEffectManager.Instance.SpawnEffect(
@@ -111,7 +141,6 @@ public class DashAbility : BaseAbility
             );
         }
 
-        // Play activation effect
         if (Data.activationEffectPrefab != null)
         {
             GameObject activationEffect = AbilityEffectManager.Instance.SpawnEffect(
@@ -120,11 +149,9 @@ public class DashAbility : BaseAbility
                 abilityId
             );
 
-            // Auto-destroy activation effect after short time
             player.StartCoroutine(DestroyEffectDelayed(activationEffect, 1f));
         }
 
-        // Play sound effect
         if (Data.activationSound != null)
         {
             AudioSource.PlayClipAtPoint(Data.activationSound, player.transform.position);
@@ -133,13 +160,11 @@ public class DashAbility : BaseAbility
 
     private void DisableEffects()
     {
-        // Destroy trail effect with delay for natural fade
         if (activeTrailEffect != null)
         {
             player.StartCoroutine(DestroyEffectDelayed(activeTrailEffect, 0.5f));
         }
 
-        // Stop and destroy particle effect
         if (activeParticleEffect != null)
         {
             ParticleSystem particles = activeParticleEffect.GetComponent<ParticleSystem>();
@@ -154,33 +179,41 @@ public class DashAbility : BaseAbility
     private IEnumerator DestroyEffectDelayed(GameObject effect, float delay)
     {
         yield return new WaitForSeconds(delay);
-        AbilityEffectManager.Instance.DestroyEffect(effect, abilityId);
+        if (AbilityEffectManager.Instance != null)
+        {
+            AbilityEffectManager.Instance.DestroyEffect(effect, abilityId);
+        }
     }
 
     private IEnumerator PerformDash()
     {
         isDashing = true;
 
-        // Disable movement and enable invincibility
         if (movement != null)
             movement.SetMovementEnabled(false);
         if (health != null)
             health.SetInvincible(true);
 
-        // Enable visual effects
         EnableEffects();
 
-        Vector3 startPosition = player.transform.position;
-        Vector3 targetPosition = startPosition + (dashDirection * currentDashDistance);
-
-        float dashTime = currentDashDistance / dashSpeed;
+        float dashTime = currentDashDistance / skillManager.dashSpeed;
         float elapsedTime = 0f;
 
         while (elapsedTime < dashTime)
         {
             elapsedTime += Time.deltaTime;
-            Vector3 frameMovement = dashDirection * dashSpeed * Time.deltaTime;
-            characterController.Move(frameMovement);
+            Vector3 frameMovement = dashDirection * skillManager.dashSpeed * Time.deltaTime;
+
+            if (characterController != null)
+            {
+                characterController.Move(frameMovement);
+            }
+            else
+            {
+                Debug.LogError("CharacterController is null during dash!");
+                break;
+            }
+
             yield return null;
         }
 
