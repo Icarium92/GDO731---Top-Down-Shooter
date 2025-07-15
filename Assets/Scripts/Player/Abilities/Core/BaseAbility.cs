@@ -96,15 +96,13 @@ public abstract class BaseAbility : IAbility
 
     protected virtual void PlayActivationEffects()
     {
-        if (Data.activationEffectPrefab != null)
-        {
-            GameObject effect = ObjectPool.instance.GetObject(Data.activationEffectPrefab, player.transform);
-            ObjectPool.instance.ReturnObject(effect, 1f);
-        }
+        // Override to prevent base class from spawning effects
+        // We handle all effects in EnableEffects() instead
 
+        // Keep only the audio if you want it to play immediately
         if (Data.activationSound != null)
         {
-            // Play sound - integrate with your audio system
+            AudioSource.PlayClipAtPoint(Data.activationSound, player.transform.position);
         }
     }
 

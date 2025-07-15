@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DashAbility : BaseAbility
 {
@@ -14,6 +15,7 @@ public class DashAbility : BaseAbility
     // Dynamic effect references
     private GameObject activeTrailEffect;
     private GameObject activeParticleEffect;
+    private List<ParticleSystem> activeParticleSystems = new List<ParticleSystem>();
     private string abilityId;
 
     public DashAbility(AbilityData data, Player player, SkillManager skillManager) : base(data, player)
@@ -96,7 +98,6 @@ public class DashAbility : BaseAbility
     private void CalculateDashDirection()
     {
         Vector3 inputDirection = Vector3.zero;
-
         if (movement != null && movement.moveInput != Vector2.zero)
         {
             inputDirection = new Vector3(
@@ -105,7 +106,6 @@ public class DashAbility : BaseAbility
                 movement.moveInput.y
             ).normalized;
         }
-
         dashDirection = inputDirection != Vector3.zero ? inputDirection : player.transform.forward;
     }
 
@@ -123,35 +123,42 @@ public class DashAbility : BaseAbility
 
     private void EnableEffects()
     {
+        // Trail Effect
         if (Data.trailEffectPrefab != null)
         {
-            activeTrailEffect = AbilityEffectManager.Instance.SpawnEffect(
-                Data.trailEffectPrefab,
-                player.transform,
-                abilityId
-            );
+            activeTrailEffect = Object.Instantiate(Data.trailEffectPrefab, player.transform);
+            activeTrailEffect.transform.localPosition = Vector3.zero;
+            activeTrailEffect.transform.localRotation = Quaternion.identity;
         }
 
+        // Particle Effects - collect ALL child particle systems so we can play/stop/manage them
         if (Data.particleEffectPrefab != null)
         {
-            activeParticleEffect = AbilityEffectManager.Instance.SpawnEffect(
-                Data.particleEffectPrefab,
-                player.transform,
-                abilityId
-            );
+            activeParticleEffect = Object.Instantiate(Data.particleEffectPrefab, player.transform);
+            activeParticleEffect.transform.localPosition = Vector3.zero;
+            activeParticleEffect.transform.localRotation = Quaternion.identity;
+
+            // Collect all particle systems in the effect prefab (root + all children, no duplicates)
+            activeParticleSystems.Clear();
+            ParticleSystem[] systems = activeParticleEffect.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (var ps in systems)
+            {
+                ps.Clear(true);
+                ps.Play();
+                activeParticleSystems.Add(ps);
+            }
         }
 
+        // Activation burst
         if (Data.activationEffectPrefab != null)
         {
-            GameObject activationEffect = AbilityEffectManager.Instance.SpawnEffect(
-                Data.activationEffectPrefab,
-                player.transform,
-                abilityId
-            );
-
+            GameObject activationEffect = Object.Instantiate(Data.activationEffectPrefab, player.transform);
+            activationEffect.transform.localPosition = Vector3.zero;
+            activationEffect.transform.localRotation = Quaternion.identity;
             player.StartCoroutine(DestroyEffectDelayed(activationEffect, 1f));
         }
 
+        // Audio
         if (Data.activationSound != null)
         {
             AudioSource.PlayClipAtPoint(Data.activationSound, player.transform.position);
@@ -162,26 +169,31 @@ public class DashAbility : BaseAbility
     {
         if (activeTrailEffect != null)
         {
-            player.StartCoroutine(DestroyEffectDelayed(activeTrailEffect, 0.5f));
+            Object.Destroy(activeTrailEffect);
+            activeTrailEffect = null;
         }
+
+        // Stop (and then destroy) all child particle systems, not just the root
+        foreach (var ps in activeParticleSystems)
+        {
+            if (ps != null)
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+        activeParticleSystems.Clear();
 
         if (activeParticleEffect != null)
         {
-            ParticleSystem particles = activeParticleEffect.GetComponent<ParticleSystem>();
-            if (particles != null)
-            {
-                particles.Stop();
-                player.StartCoroutine(DestroyEffectDelayed(activeParticleEffect, 1f));
-            }
+            Object.Destroy(activeParticleEffect);
+            activeParticleEffect = null;
         }
     }
 
     private IEnumerator DestroyEffectDelayed(GameObject effect, float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (AbilityEffectManager.Instance != null)
+        if (effect != null)
         {
-            AbilityEffectManager.Instance.DestroyEffect(effect, abilityId);
+            Object.Destroy(effect);
         }
     }
 
