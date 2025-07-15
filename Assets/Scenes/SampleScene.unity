@@ -12800,7 +12800,6 @@ GameObject:
   - component: {fileID: 1746550276}
   - component: {fileID: 1746550282}
   - component: {fileID: 1746550270}
-  - component: {fileID: 1746550283}
   - component: {fileID: 1746550279}
   - component: {fileID: 1746550277}
   - component: {fileID: 1746550278}
@@ -13006,21 +13005,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
---- !u!114 &1746550283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1746550269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 186bd64dcfd4b924bae13d563cfd11ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  availableAbilities:
-  - {fileID: 11400000, guid: b1d131851e096b54e8df8f01335b071c, type: 2}
-  useInputActions: 1
 --- !u!4 &1746982451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1470273907682418816, guid: 89ce90a311f45584f96e199ee411f64d, type: 3}
@@ -14204,26 +14188,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1910558466}
-  - component: {fileID: 1910558465}
+  - component: {fileID: 1910558467}
   m_Layer: 0
-  m_Name: '***AbilityEffectManager***'
+  m_Name: '***SkillManager***'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1910558465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1910558464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fe87bee08f9b754994066586806b56a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1910558466
 Transform:
   m_ObjectHideFlags: 0
@@ -14239,6 +14211,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1910558467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910558464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f6ccd1bf121bf4b93b10cdcbf6ae59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1746550276}
+  allAbilities:
+  - {fileID: 11400000, guid: b1d131851e096b54e8df8f01335b071c, type: 2}
+  dashDistance: 2.5
+  dashSpeed: 15
+  dashCooldown: 1
+  dashObstacles:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1914271569
 GameObject:
   m_ObjectHideFlags: 0
