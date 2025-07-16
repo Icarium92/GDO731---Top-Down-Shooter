@@ -13,11 +13,6 @@ public class IconPanelUIAbility : MonoBehaviour
     public Image AbilityIcon;
     public Image AbilityPanel;
 
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
         DisplayIcon();
@@ -32,11 +27,13 @@ public class IconPanelUIAbility : MonoBehaviour
                 CooldownTextComponent.text = string.Empty;
                 AbilityIcon.enabled = true;
                 AbilityPanel.enabled = false;
+                AbilityPanel.fillAmount = 1;
             }
             else
             {
-                AbilityIcon.enabled = false; 
+                AbilityIcon.enabled = false;
                 AbilityPanel.enabled = true;
+                AbilityPanel.fillAmount -= 1 / Ability.CooldownTimer * Time.deltaTime;
                 CooldownTextComponent.text = Ability.CooldownTimer.ToString("F0");
             }
         }
