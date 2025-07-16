@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 91d7f0c4083071a47a6fb5392b89af43
+guid: 547814cc1302b124493fb0130a9fd1e4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,12 +95,34 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: UI_WeaponIcons_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 121
+        width: 1920
+        height: 959
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7da2820d525c8c7498f05d69d7cc1dc5
+      internalID: -1854039666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 58a5190177b528f4fbcf90b92258e2d5
     internalID: 0
     vertices: []
     indices: 
@@ -109,7 +131,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      UI_WeaponIcons_0: -1854039666
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
