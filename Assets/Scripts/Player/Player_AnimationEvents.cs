@@ -21,7 +21,6 @@ public class Player_AnimationEvents : MonoBehaviour
         weaponController.SetWeaponReady(true);
     }
 
-
     public void ReturnRig()
     {
         visualController.MaximizeRigWeight();

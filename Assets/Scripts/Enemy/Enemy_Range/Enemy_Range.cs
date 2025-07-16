@@ -53,6 +53,9 @@ public class Enemy_Range : Enemy
 
     [SerializeField] List<Enemy_RangeWeaponData> avalibleWeaponData;
 
+    // --- Static pool parent for aim objects (using EnemyPool) ---
+    public static Transform AimPoolParent;
+
     #region States
     public IdleState_Range idleState { get; private set; }
     public MoveState_Range moveState { get; private set; }
@@ -67,6 +70,19 @@ public class Enemy_Range : Enemy
     {
         base.Awake();
 
+        if (AimPoolParent == null)
+        {
+            GameObject foundPool = GameObject.Find("***EnemyPool***");
+            if (foundPool == null)
+            {
+                Debug.LogError("EnemyPool GameObject not found in the scene! Please create one in your scene hierarchy.");
+            }
+            else
+            {
+                AimPoolParent = foundPool.transform;
+            }
+        }
+
         idleState = new IdleState_Range(this, stateMachine, "Idle");
         moveState = new MoveState_Range(this, stateMachine, "Move");
         battleState = new BattleState_Range(this, stateMachine, "Battle");
@@ -79,12 +95,17 @@ public class Enemy_Range : Enemy
     protected override void Start()
     {
         base.Start();
-
         playersBody = player.GetComponent<Player>().playerBody;
-        aim.parent = null;
+
+        // --- Ensure aim is attached to this enemy on start ---
+        if (aim != null)
+        {
+            aim.SetParent(this.transform);
+            aim.localPosition = Vector3.zero; // Optionally set to your desired local position
+            aim.gameObject.SetActive(true);
+        }
 
         InitializePerk();
-
         stateMachine.Initialize(idleState);
         visuals.SetupLook();
         SetupWeapon();
@@ -93,7 +114,6 @@ public class Enemy_Range : Enemy
     protected override void Update()
     {
         base.Update();
-
         stateMachine.currentState.Update();
     }
 
@@ -101,17 +121,28 @@ public class Enemy_Range : Enemy
     {
         base.Die();
 
-        // New: Deactivate or destroy the aim object to prevent lingering
+        // --- Pool the aim transform by moving to EnemyPool ---
         if (aim != null)
         {
-            aim.gameObject.SetActive(false); // Deactivate (preferred for pooling reuse)
-                                             // Or Destroy(aim.gameObject); if you want permanent deletion
+            aim.SetParent(AimPoolParent);
+            aim.gameObject.SetActive(false);
         }
 
         if (stateMachine.currentState != deadState)
             stateMachine.ChangeState(deadState);
     }
 
+    // --- New method: call this from your pooling/spawn system after enemy is reused from pool ---
+    public void OnEnemySpawned()
+    {
+        if (aim != null)
+        {
+            aim.SetParent(this.transform);
+            aim.localPosition = Vector3.zero;
+            aim.gameObject.SetActive(true);
+        }
+        // Reset other state as needed...
+    }
 
     public bool CanThrowGrenade()
     {
@@ -246,8 +277,6 @@ public class Enemy_Range : Enemy
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, gunPoint);
         newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
 
-        // Fixed: Pass direction.magnitude as third argument (assuming BulletSetup expects a float for distance or speed)
-        // If BulletSetup expects bullet speed, pass weaponData.bulletSpeed; if it expects distance, pass bulletsDirection.magnitude (which is 1 for normalized)
         newBullet.GetComponent<Bullet>().BulletSetup(whatIsAlly, weaponData.bulletDamage, weaponData.bulletSpeed);
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
@@ -312,7 +341,6 @@ public class Enemy_Range : Enemy
     }
 
     #endregion
-
 
     public bool IsUnstopppable() => unstoppablePerk == UnstoppablePerk.Unstoppable;
 }

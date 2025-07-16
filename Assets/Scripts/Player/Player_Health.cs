@@ -21,7 +21,7 @@ public class Player_Health : HealthController
 
         base.ReduceHealth(damage);
 
-        // NEW: Update health bar when taking damage (same as enemy approach)
+        // Update the health bar UI
         if (player.healthBar != null)
         {
             player.healthBar.value = currentHealth;
@@ -45,5 +45,9 @@ public class Player_Health : HealthController
         isDead = true;
         player.anim.enabled = false;
         player.ragdoll.RagdollActive(true);
+
+        // Hide the health bar
+        if (player.healthBar != null)
+            player.healthBar.gameObject.SetActive(false);
     }
 }

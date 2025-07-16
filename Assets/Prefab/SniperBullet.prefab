@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6261077747504819440}
   - component: {fileID: -6479415848919586009}
   m_Layer: 9
-  m_Name: Bullet
+  m_Name: SniperBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 265df4365c4bb0740b9c026e3b52a181, type: 2}
+  - {fileID: 2100000, guid: 581d6234c5b0c1c4f847ea6077d3301f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b01eebccf705f4ba5e091b8f54d56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletImpactFX: {fileID: 4266559762961818354, guid: 7326ad26c6337224d8144cf0e2f4fa68, type: 3}
+  bulletImpactFX: {fileID: 4266559762961818354, guid: 273d5611c76a45f4db7819b5faf5159b, type: 3}
   sniperImpactFX: {fileID: 4266559762961818354, guid: 273d5611c76a45f4db7819b5faf5159b, type: 3}
 --- !u!96 &-6479415848919586009
 TrailRenderer:
@@ -176,7 +176,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 265df4365c4bb0740b9c026e3b52a181, type: 2}
+  - {fileID: 2100000, guid: 581d6234c5b0c1c4f847ea6077d3301f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -197,26 +197,26 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.25
+  m_Time: 0.3
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.21091686
-        inSlope: -0.01904417
-        outSlope: -0.01904417
+        value: 0.4
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 0
+        value: 0.09
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -228,7 +228,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0, g: 0.6221652, b: 1, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 1, g: 1, b: 1, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}

@@ -4,19 +4,18 @@ public class Bullet : MonoBehaviour
 {
     private int bulletDamage;
     private float impactForce;
-
     private BoxCollider cd;
     private Rigidbody rb;
     private MeshRenderer meshRenderer;
     private TrailRenderer trailRenderer;
 
-    [SerializeField] private GameObject bulletImpactFX;
+    [SerializeField] private GameObject bulletImpactFX;    // Default impact effect
 
     private Vector3 startPosition;
     private float flyDistance;
     private bool bulletDisabled;
-
     private LayerMask allyLayerMask;
+    private bool useSniperImpact; // Was this fired as a charge/blue shot?
 
     protected virtual void Awake()
     {
@@ -26,20 +25,30 @@ public class Bullet : MonoBehaviour
         trailRenderer = GetComponent<TrailRenderer>();
     }
 
-    public void BulletSetup(LayerMask allyLayerMask, int bulletDamage, float flyDistance = 100, float impactForce = 100)
+    /// <summary>
+    /// Setup for each bullet spawn.
+    /// </summary>
+    public void BulletSetup(
+        LayerMask allyLayerMask,
+        int bulletDamage,
+        float flyDistance = 100,
+        float impactForce = 100,
+        bool useSniperImpact = false    // Pass true for charged/blue shots
+    )
     {
         this.allyLayerMask = allyLayerMask;
         this.impactForce = impactForce;
         this.bulletDamage = bulletDamage;
-
+        this.useSniperImpact = useSniperImpact;
         bulletDisabled = false;
+
         cd.enabled = true;
         meshRenderer.enabled = true;
-
         trailRenderer.Clear();
-        trailRenderer.time = .25f;
+        trailRenderer.time = 0.25f;
+
         startPosition = transform.position;
-        this.flyDistance = flyDistance + .5f; // magic number .5f is a length of tip of the laser
+        this.flyDistance = flyDistance + 0.5f;
     }
 
     protected virtual void Update()
@@ -51,7 +60,7 @@ public class Bullet : MonoBehaviour
 
     protected void ReturnToPoolIfNeeded()
     {
-        if (trailRenderer.time < 0)
+        if (trailRenderer.time <= 0)
             ReturnBulletToPool();
     }
 
@@ -62,24 +71,25 @@ public class Bullet : MonoBehaviour
             cd.enabled = false;
             meshRenderer.enabled = false;
             bulletDisabled = true;
-            ReturnBulletToPool(); // Immediate return
+            ReturnBulletToPool();
         }
     }
 
     protected void FadeTrailIfNeeded()
     {
         if (Vector3.Distance(startPosition, transform.position) > flyDistance - 1.5f)
-            trailRenderer.time -= 2 * Time.deltaTime; // magic number 2 is choosen trhou testing
+        {
+            trailRenderer.time -= 2 * Time.deltaTime;
+        }
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (FriendlyFire() == false)
+        if (!FriendlyFire)
         {
-            // Use a bitwise AND to check if the collsion layer is in the allyLayerMask
-            if ((allyLayerMask.value & (1 << collision.gameObject.layer)) > 0)
+            if ((allyLayerMask.value & (1 << collision.gameObject.layer)) != 0)
             {
-                ReturnBulletToPool(10);
+                ReturnBulletToPool(0.1f);
                 return;
             }
         }
@@ -89,7 +99,6 @@ public class Bullet : MonoBehaviour
 
         IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
         damagable?.TakeDamage(bulletDamage);
-
 
         ApplyBulletImpactToEnemy(collision);
     }
@@ -107,17 +116,14 @@ public class Bullet : MonoBehaviour
 
     protected void ReturnBulletToPool(float delay = 0)
     {
-        // New: Unparent to remove from Hierarchy
-        transform.SetParent(null);
-
         ObjectPool.instance.ReturnObject(gameObject, delay);
     }
 
-    protected void CreateImpactFx()
+    protected virtual void CreateImpactFx()
     {
         GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX, transform);
         ObjectPool.instance.ReturnObject(newImpactFx, 1);
     }
 
-    private bool FriendlyFire() => GameManager.Instance.friendlyFire;
+    private bool FriendlyFire => GameManager.Instance.friendlyFire;
 }
