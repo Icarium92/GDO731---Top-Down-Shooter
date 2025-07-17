@@ -11,7 +11,7 @@ public class Player_WeaponController : MonoBehaviour
     //This is the default speed from whcih our mass formula is derived.
 
     [SerializeField] private Weapon_Data defaultWeaponData;
-    [SerializeField] private Weapon currentWeapon;
+    public Weapon currentWeapon; //changed to public so UI can access current data 
     private bool weaponReady;
     private bool isShooting;
 
