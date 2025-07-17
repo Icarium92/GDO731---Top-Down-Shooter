@@ -7,8 +7,18 @@ using UnityEngine.UI;
 public class StyleManager : MonoBehaviour
 {
     [SerializeField] private FloatVariable style;
+    [SerializeField] private FloatReference StyleStart;
+    public bool IsReset;
     [SerializeField] private TextMeshProUGUI styleTextComponent;
     [SerializeField] private float StyleSpeedMultipler;
+
+    private void Start()
+    {
+        if (IsReset)
+        {
+            style.Value = StyleStart.Value;
+        }
+    }
 
     // Update is called once per frame
     void Update()

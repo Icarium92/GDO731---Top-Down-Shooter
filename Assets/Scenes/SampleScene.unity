@@ -20789,6 +20789,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 765b86c637c5fcf44ba280c28ca59343, type: 2}
+  StyleStart:
+    UseConstant: 1
+    ConstantValue: 50
+    Variable: {fileID: 0}
+  IsReset: 1
   styleTextComponent: {fileID: 1910580794}
   StyleSpeedMultipler: 1
 --- !u!4 &1949760610
