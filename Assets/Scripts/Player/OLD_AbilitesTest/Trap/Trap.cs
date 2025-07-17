@@ -10,7 +10,7 @@ public class Trap : MonoBehaviour
     public float trapInitialization;
     public float statusDuration;
 
-    public LayerMask enemyLayerMask = 1 << 11;
+    //public LayerMask enemyLayerMask = 1 << 11;
 
     //[SerializeField] private Enemy_Melee _trapEnemy;
     //public UnityEvent OnStyleIncrease;
