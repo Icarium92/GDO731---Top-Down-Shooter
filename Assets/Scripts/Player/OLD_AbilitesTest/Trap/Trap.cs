@@ -12,49 +12,45 @@ public class Trap : MonoBehaviour
 
     public LayerMask enemyLayerMask = 1 << 11;
 
-    [SerializeField] private Enemy_Melee _trapEnemy;
+    //[SerializeField] private Enemy_Melee _trapEnemy;
     //public UnityEvent OnStyleLevel;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            HitBox enemyHitbox = other.GetComponent<HitBox>();
+        Enemy_Melee enemy = other.gameObject.GetComponentInParent<Enemy_Melee>();
 
-            if(enemyHitbox.EnemyHit() != null)
-            {
-                _trapEnemy = enemyHitbox.EnemyHit();
-                StartCoroutine(TrapInitialization());
-            }
+        if(enemy != null)
+        {
+            StartCoroutine(TrapInitialization(enemy));
         }
     }
 
-    private IEnumerator WillThisWork()
+    private IEnumerator WillThisWork(Enemy_Melee enemy)
     {
-        _trapEnemy.runSpeed = 0;
-        _trapEnemy.stateMachine.ChangeState(_trapEnemy.idleState);
+        enemy.runSpeed = 0;
+        enemy.stateMachine.ChangeState(enemy.idleState);
 
         yield return new WaitForSeconds(statusDuration);
 
-        if(_trapEnemy.stateMachine.currentState == _trapEnemy.deadState)
+        if(enemy.stateMachine.currentState == enemy.deadState)
         {
             Debug.Log("enemyDead");
             StopAllCoroutines();
         }
         else
         {
-            _trapEnemy.runSpeed = 3;
-            _trapEnemy.stateMachine.ChangeState(_trapEnemy.chaseState);
+            enemy.runSpeed = 3;
+            enemy.stateMachine.ChangeState(enemy.chaseState);
         }
 
         Destroy(gameObject);
     }
 
-    private IEnumerator TrapInitialization()
+    private IEnumerator TrapInitialization(Enemy_Melee enemy)
     {
         yield return new WaitForSeconds(trapInitialization);
 
-        StartCoroutine(WillThisWork());
+        StartCoroutine(WillThisWork(enemy));
     }
 
 }
