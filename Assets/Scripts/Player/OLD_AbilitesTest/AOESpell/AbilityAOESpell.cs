@@ -10,8 +10,8 @@ public class AbilityAOESpell : AbilityBaseClass
 
     [Header("Events")]
     public UnityEvent onStyleIncrease;
-    public UnityEvent onStyleLevel;
-    public UnityEvent onStyleBoost;
+    //public UnityEvent onStyleLevel;
+    //public UnityEvent onStyleBoost;
     public UnityEvent onStyleDecrease;
 
     [Header("AOESpell")]
@@ -40,6 +40,7 @@ public class AbilityAOESpell : AbilityBaseClass
                 if (enemy != null)
                 {
                     enemy.TakeDamage(AOESpellDamage);
+                    hits++; 
                 }
             }
         }
@@ -55,10 +56,12 @@ public class AbilityAOESpell : AbilityBaseClass
                 onStyleIncrease?.Invoke();
                 break;
             case 2:
-                onStyleLevel?.Invoke();
+                onStyleIncrease?.Invoke();
+                //onStyleLevel?.Invoke();
                 break;
             case > 2:
-                onStyleBoost?.Invoke();
+                onStyleIncrease?.Invoke();
+                //onStyleBoost?.Invoke();
                 break;
         }
     }

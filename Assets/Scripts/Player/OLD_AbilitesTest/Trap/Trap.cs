@@ -13,7 +13,8 @@ public class Trap : MonoBehaviour
     public LayerMask enemyLayerMask = 1 << 11;
 
     //[SerializeField] private Enemy_Melee _trapEnemy;
-    //public UnityEvent OnStyleLevel;
+    //public UnityEvent OnStyleIncrease;
+    //public UnityEvent OnStyleDecrease;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,9 +33,8 @@ public class Trap : MonoBehaviour
 
         yield return new WaitForSeconds(statusDuration);
 
-        if(enemy.stateMachine.currentState == enemy.deadState)
+        if (enemy.stateMachine.currentState == enemy.deadState)
         {
-            Debug.Log("enemyDead");
             StopAllCoroutines();
         }
         else
