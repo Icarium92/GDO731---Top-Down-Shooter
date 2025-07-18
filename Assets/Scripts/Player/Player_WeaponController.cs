@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player_WeaponController : MonoBehaviour
 {
     [SerializeField] public LayerMask whatIsAlly;
@@ -31,6 +32,7 @@ public class Player_WeaponController : MonoBehaviour
     {
         player = GetComponent<Player>();
         AssignInputEvents();
+
         Invoke(nameof(EquipStartingWeapon), 0.1f);
     }
 
@@ -54,9 +56,13 @@ public class Player_WeaponController : MonoBehaviour
             return;
 
         SetWeaponReady(false);
+
         currentWeapon = weaponSlots[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
+
         CameraManager.instance.ChangeCameraDistance(currentWeapon.cameraDistance);
+
+        UpdateWeaponUI();
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -79,6 +85,8 @@ public class Player_WeaponController : MonoBehaviour
 
         weaponSlots.Add(newWeapon);
         player.weaponVisuals.SwitchOnBackupWeaponModel();
+
+        UpdateWeaponUI();
     }
 
     private void DropWeapon()
@@ -103,6 +111,11 @@ public class Player_WeaponController : MonoBehaviour
     }
 
     #endregion
+
+    public void UpdateWeaponUI()
+    {
+        UI.instance.inGameUI.UpdateWeaponUI(weaponSlots, currentWeapon);
+    }
 
     private IEnumerator BurstFire()
     {
@@ -141,6 +154,7 @@ public class Player_WeaponController : MonoBehaviour
     private void FireSingleBullet()
     {
         currentWeapon.bulletsInMagazine--;
+        UpdateWeaponUI();
 
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, GunPoint());
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
@@ -159,6 +173,9 @@ public class Player_WeaponController : MonoBehaviour
     {
         SetWeaponReady(false);
         player.weaponVisuals.PlayReloadAnimation();
+
+        // We do the refill of the bullets in Player_AnimationEvents
+        // We UpdateWeaponUI in Player_AnimationEvents as well
     }
 
     public Vector3 BulletDirection()

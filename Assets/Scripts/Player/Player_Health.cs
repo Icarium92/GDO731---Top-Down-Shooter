@@ -29,6 +29,8 @@ public class Player_Health : HealthController
 
         if (ShouldDie())
             Die();
+
+        UI.instance.inGameUI.UpdateHealthUI(currentHealth, maxHealth);
     }
 
     public void SetInvincible(bool invincible)
