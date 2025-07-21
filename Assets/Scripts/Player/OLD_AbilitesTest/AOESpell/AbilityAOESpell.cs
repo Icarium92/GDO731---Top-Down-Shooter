@@ -39,6 +39,7 @@ public class AbilityAOESpell : AbilityBaseClass
             {
                 if (enemy != null)
                 {
+                    Debug.Log(enemy);
                     enemy.TakeDamage(AOESpellDamage);
                     hits++; 
                 }
@@ -52,17 +53,10 @@ public class AbilityAOESpell : AbilityBaseClass
             case 0:
                 onStyleDecrease?.Invoke();
                 break;
-            case 1:
+            case > 0:
                 onStyleIncrease?.Invoke();
                 break;
-            case 2:
-                onStyleIncrease?.Invoke();
-                //onStyleLevel?.Invoke();
-                break;
-            case > 2:
-                onStyleIncrease?.Invoke();
-                //onStyleBoost?.Invoke();
-                break;
+            
         }
     }
 

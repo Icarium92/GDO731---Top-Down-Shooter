@@ -19352,15 +19352,15 @@ MonoBehaviour:
   OnPlayerHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 765b86c637c5fcf44ba280c28ca59343, type: 2}
-        m_TargetAssemblyTypeName: FloatVariable, Assembly-CSharp
-        m_MethodName: ApplyChange
-        m_Mode: 4
+      - m_Target: {fileID: 11400000, guid: 0b882f2e18dbe1e4a921d3877c60978f, type: 2}
+        m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
+        m_MethodName: Raise
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: -15
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
