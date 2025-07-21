@@ -141,6 +141,9 @@ public class SimpleChargeShot : MonoBehaviour
         var weapon = weaponController.CurrentWeapon();
         weapon.bulletsInMagazine -= bulletsRequired;
 
+        // ADD THIS LINE: Update the UI to reflect the ammo change
+        weaponController.UpdateWeaponUI();
+
         // Fire the charged bullet
         FireEnhancedBullet(damageMultiplier);
 
