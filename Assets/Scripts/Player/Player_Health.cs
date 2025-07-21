@@ -8,6 +8,7 @@ public class Player_Health : HealthController
     private Player player;
 
     public UnityEvent OnPlayerDeath;
+    public UnityEvent OnPlayerHit;
 
     public bool isDead { get; private set; }
     private bool isInvincible = false; // NEW: For ability system integration
@@ -24,6 +25,7 @@ public class Player_Health : HealthController
         if (isInvincible) return; // NEW: Ability system integration
 
         base.ReduceHealth(damage);
+        OnPlayerHit?.Invoke();
 
         if (ShouldDie())
             Die();

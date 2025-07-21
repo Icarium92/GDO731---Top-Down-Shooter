@@ -10,17 +10,19 @@ public class Trap : MonoBehaviour
     public float trapInitialization;
     public float statusDuration;
 
+    private bool isTriggered;
+
     //public LayerMask enemyLayerMask = 1 << 11;
 
     //[SerializeField] private Enemy_Melee _trapEnemy;
-    //public UnityEvent OnStyleIncrease;
+    public UnityEvent OnStyleIncrease;
     //public UnityEvent OnStyleDecrease;
 
     private void OnTriggerEnter(Collider other)
     {
         Enemy_Melee enemy = other.gameObject.GetComponentInParent<Enemy_Melee>();
 
-        if(enemy != null)
+        if(!isTriggered && enemy != null)
         {
             StartCoroutine(TrapInitialization(enemy));
         }
@@ -48,8 +50,11 @@ public class Trap : MonoBehaviour
 
     private IEnumerator TrapInitialization(Enemy_Melee enemy)
     {
+        isTriggered = true;
+
         yield return new WaitForSeconds(trapInitialization);
 
+        OnStyleIncrease?.Invoke();
         StartCoroutine(WillThisWork(enemy));
     }
 
