@@ -13,9 +13,6 @@ public class Player_Health : HealthController
     public UnityEvent OnPlayerDeath;
     public UnityEvent OnPlayerHit;
 
-    public bool isDead { get; private set; }
-    private bool isInvincible = false; // NEW: For ability system integration
-
     protected override void Awake()
     {
         base.Awake();
