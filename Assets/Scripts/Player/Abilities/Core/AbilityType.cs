@@ -4,11 +4,9 @@ using UnityEngine;
 public enum AbilityType
 {
     Dash,
-    HeavyAttack,
     Grenade,
-    Stealth,
-    Ultimate,
-    Trap
+    Trap,
+    HeavyAttack
 }
 
 [System.Serializable]
@@ -17,6 +15,7 @@ public enum AbilityState
     Ready,
     Activating,
     Active,
+    Completing,
     Cooldown,
-    Disabled
+    Cancelled
 }

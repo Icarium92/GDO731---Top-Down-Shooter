@@ -1,37 +1,43 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
 public class SkillManager : MonoBehaviour
 {
-    [Header("Required Reference")]
-    [Tooltip("Assign the Player component this skill system controls.")]
-    public Player player;
+    [Header("Ability Configuration")]
+    public List<AbilityData> availableAbilities = new List<AbilityData>();
 
-    [Header("Player Abilities")]
-    [Tooltip("Assign all AbilityData ScriptableObjects that should be available to this player.")]
-    [SerializeField] private AbilityData[] allAbilities;
+    [Header("Input Settings")]
+    public KeyCode dashKey = KeyCode.Space;
+    public KeyCode grenadeKey = KeyCode.G;
+    public KeyCode trapKey = KeyCode.T;
+    public KeyCode heavyAttackKey = KeyCode.Q;
 
-    [Header("Dash Settings")]
-    [Tooltip("Maximum distance the player can dash")]
-    public float dashDistance = 2.5f;
+    [Header("Debug")]
+    public bool enableDebugLogs = true;
 
-    [Tooltip("Speed of the dash movement")]
-    public float dashSpeed = 15f;
+    private Dictionary<AbilityType, IAbility> equippedAbilities = new Dictionary<AbilityType, IAbility>();
+    private Player player;
+    private StyleSystem styleSystem;
 
-    [Tooltip("Cooldown time between dash uses (in seconds)")]
-    public float dashCooldown = 1.5f;
-
-    [Tooltip("Layers that block dash movement")]
-    public LayerMask dashObstacles = -1;
-
-    private readonly Dictionary<AbilityType, IAbility> abilities = new();
+    public System.Action<AbilityType, bool> OnAbilityStateChanged;
+    public System.Action<AbilityType> OnAbilityActivated;
+    public System.Action<AbilityType> OnAbilityCooldownStarted;
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         if (player == null)
         {
-            Debug.LogError("SkillManager: Player reference is not assigned. Please assign it in the Inspector.");
+            Debug.LogError("SkillManager: No Player component found!");
             return;
+        }
+
+        styleSystem = player.styleSystem;
+        if (styleSystem == null)
+        {
+            Debug.LogWarning("SkillManager: No StyleSystem found. Adding one...");
+            styleSystem = gameObject.AddComponent<StyleSystem>();
         }
     }
 
@@ -40,109 +46,292 @@ public class SkillManager : MonoBehaviour
         InitializeAbilities();
     }
 
+    private void Update()
+    {
+        HandleInput();
+        UpdateAbilities();
+    }
+
     private void InitializeAbilities()
     {
-        abilities.Clear();
-
-        foreach (var data in allAbilities)
+        if (availableAbilities == null || availableAbilities.Count == 0)
         {
-            if (data == null)
-            {
-                Debug.LogWarning("SkillManager: A null AbilityData was found in the allAbilities list.");
-                continue;
-            }
+            Debug.LogWarning("SkillManager: No abilities configured!");
+            return;
+        }
 
-            if (abilities.ContainsKey(data.type))
-            {
-                Debug.LogWarning($"SkillManager: Duplicate ability type '{data.type}' found. Skipping duplicate.");
-                continue;
-            }
+        foreach (AbilityData abilityData in availableAbilities)
+        {
+            if (abilityData == null) continue;
 
-            IAbility ability = CreateAbility(data);
+            IAbility ability = CreateAbility(abilityData);
             if (ability != null)
             {
-                abilities[data.type] = ability;
-                Debug.Log($"SkillManager: Successfully created ability '{data.type}'");
-            }
-            else
-            {
-                Debug.LogWarning($"SkillManager: Could not create an ability for type '{data.type}'.");
+                equippedAbilities[abilityData.type] = ability;
+                if (enableDebugLogs)
+                    Debug.Log($"SkillManager: Initialized {abilityData.type} ability");
             }
         }
     }
 
     private IAbility CreateAbility(AbilityData data)
     {
-        switch (data.type)
+        try
         {
-            case AbilityType.Dash:
-                Debug.Log("Creating DashAbility");
-                return new DashAbility(data, player, this);
-
-            default:
-                Debug.LogWarning($"SkillManager: No case found for AbilityType '{data.type}'.");
-                return null;
-        }
-    }
-
-    public bool TryActivateAbility(AbilityType type)
-    {
-        if (abilities.TryGetValue(type, out var ability))
-        {
-            if (ability.CanActivate())
+            switch (data.type)
             {
-                ability.Activate();
-                return true;
-            }
-            else
-            {
-                Debug.Log($"SkillManager: Ability '{type}' cannot be activated right now. Cooldown: {ability.CooldownProgress:F1}");
+                case AbilityType.Dash:
+                    return new DashAbility(data, player, this);
+                case AbilityType.Grenade:
+                    return new GrenadeAbility(data, player);
+                case AbilityType.Trap:
+                    return new TrapAbility(data, player);
+                case AbilityType.HeavyAttack:
+                    return new ChargeShotAbility(data, player);
+                default:
+                    Debug.LogWarning($"SkillManager: No case found for AbilityType {data.type}.");
+                    return null;
             }
         }
-        else
+        catch (System.Exception e)
         {
-            Debug.LogWarning($"SkillManager: Ability '{type}' not found.");
+            Debug.LogError($"SkillManager: Failed to create {data.type} ability: {e.Message}");
+            return null;
         }
-
-        return false;
     }
 
-    public IAbility GetAbility(AbilityType type)
+    private bool IsPlayerAlive()
     {
-        abilities.TryGetValue(type, out var ability);
-        return ability;
-    }
-
-    public float GetDashCooldownProgress()
-    {
-        if (abilities.TryGetValue(AbilityType.Dash, out var ability))
-        {
-            return ability.CooldownProgress;
-        }
-        return 1f; // Ready
-    }
-
-    private void Update()
-    {
-        foreach (var ability in abilities.Values)
-        {
-            ability.Update();
-        }
-
-        HandleInput();
+        return player != null && player.health != null && player.health.currentHealth > 0;
     }
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Space key pressed - attempting dash");
-            TryActivateAbility(AbilityType.Dash);
-        }
+        if (player == null || !IsPlayerAlive())
+            return;
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
+        if (Input.GetKeyDown(dashKey))
+            TryActivateAbility(AbilityType.Dash);
+
+        if (Input.GetKeyDown(grenadeKey))
             TryActivateAbility(AbilityType.Grenade);
+
+        if (Input.GetKeyDown(trapKey))
+            TryActivateAbility(AbilityType.Trap);
+
+        if (Input.GetKeyDown(heavyAttackKey))
+            TryActivateAbility(AbilityType.HeavyAttack);
+
+        if (Input.GetKeyUp(grenadeKey))
+            HandleAbilityRelease(AbilityType.Grenade);
+
+        if (Input.GetKeyUp(trapKey))
+            HandleAbilityRelease(AbilityType.Trap);
+
+        if (Input.GetKeyUp(heavyAttackKey))
+            HandleAbilityRelease(AbilityType.HeavyAttack);
+    }
+
+    private void UpdateAbilities()
+    {
+        foreach (var ability in equippedAbilities.Values)
+        {
+            ability?.Update();
         }
     }
+
+    public bool TryActivateAbility(AbilityType abilityType)
+    {
+        if (!equippedAbilities.TryGetValue(abilityType, out IAbility ability))
+        {
+            if (enableDebugLogs)
+                Debug.Log($"SkillManager: No {abilityType} ability equipped");
+            return false;
+        }
+
+        if (!ability.CanActivate())
+        {
+            if (enableDebugLogs)
+                Debug.Log($"SkillManager: Cannot activate {abilityType} ability");
+            return false;
+        }
+
+        bool success = ability.TryActivate();
+        if (success)
+        {
+            OnAbilityActivated?.Invoke(abilityType);
+            if (enableDebugLogs)
+                Debug.Log($"SkillManager: Activated {abilityType} ability");
+        }
+
+        return success;
+    }
+
+    private void HandleAbilityRelease(AbilityType abilityType)
+    {
+        if (equippedAbilities.TryGetValue(abilityType, out IAbility ability))
+        {
+            switch (abilityType)
+            {
+                case AbilityType.Grenade:
+                    if (ability is GrenadeAbility grenadeAbility && grenadeAbility.IsCharging)
+                    {
+                        ability.CompleteAbility();
+                    }
+                    break;
+
+                case AbilityType.Trap:
+                    if (ability is TrapAbility trapAbility && trapAbility.IsPlacing)
+                    {
+                        ability.CompleteAbility();
+                    }
+                    break;
+
+                case AbilityType.HeavyAttack:
+                    if (ability is ChargeShotAbility chargeShotAbility && chargeShotAbility.IsCharging)
+                    {
+                        ability.CompleteAbility();
+                    }
+                    break;
+            }
+        }
+    }
+
+    public IAbility GetAbility(AbilityType abilityType)
+    {
+        equippedAbilities.TryGetValue(abilityType, out IAbility ability);
+        return ability;
+    }
+
+    public T GetAbility<T>(AbilityType abilityType) where T : class, IAbility
+    {
+        return GetAbility(abilityType) as T;
+    }
+
+    public bool IsAbilityEquipped(AbilityType abilityType)
+    {
+        return equippedAbilities.ContainsKey(abilityType);
+    }
+
+    public bool IsAbilityOnCooldown(AbilityType abilityType)
+    {
+        var ability = GetAbility(abilityType);
+        return ability?.IsOnCooldown ?? false;
+    }
+
+    public float GetAbilityCooldownProgress(AbilityType abilityType)
+    {
+        var ability = GetAbility(abilityType);
+        return ability?.GetCooldownProgress() ?? 0f;
+    }
+
+    public void RefreshAllAbilities()
+    {
+        foreach (var ability in equippedAbilities.Values)
+        {
+            if (ability is GrenadeAbility grenade)
+                grenade.RefillGrenades();
+            else if (ability is TrapAbility trap)
+                trap.RefillTraps();
+
+            ability.ResetCooldown();
+        }
+
+        if (enableDebugLogs)
+            Debug.Log("SkillManager: All abilities refreshed");
+    }
+
+    public void AddAbility(AbilityData abilityData)
+    {
+        if (abilityData == null)
+        {
+            Debug.LogError("SkillManager: Cannot add null ability data");
+            return;
+        }
+
+        IAbility ability = CreateAbility(abilityData);
+        if (ability != null)
+        {
+            equippedAbilities[abilityData.type] = ability;
+            if (!availableAbilities.Contains(abilityData))
+                availableAbilities.Add(abilityData);
+
+            if (enableDebugLogs)
+                Debug.Log($"SkillManager: Added {abilityData.type} ability");
+        }
+    }
+
+    public void RemoveAbility(AbilityType abilityType)
+    {
+        if (equippedAbilities.Remove(abilityType))
+        {
+            if (enableDebugLogs)
+                Debug.Log($"SkillManager: Removed {abilityType} ability");
+        }
+    }
+
+    public void NotifyAbilityStateChanged(AbilityType abilityType, bool isActive)
+    {
+        OnAbilityStateChanged?.Invoke(abilityType, isActive);
+    }
+
+    public void NotifyAbilityCooldownStarted(AbilityType abilityType)
+    {
+        OnAbilityCooldownStarted?.Invoke(abilityType);
+    }
+
+    public AbilityInfo GetAbilityInfo(AbilityType abilityType)
+    {
+        var ability = GetAbility(abilityType);
+        if (ability == null) return null;
+
+        return new AbilityInfo
+        {
+            type = abilityType,
+            isOnCooldown = ability.IsOnCooldown,
+            cooldownProgress = ability.GetCooldownProgress(),
+            canActivate = ability.CanActivate(),
+            isActive = ability.IsActive,
+            charges = GetAbilityCharges(abilityType),
+            maxCharges = GetAbilityMaxCharges(abilityType)
+        };
+    }
+
+    private int GetAbilityCharges(AbilityType abilityType)
+    {
+        switch (abilityType)
+        {
+            case AbilityType.Grenade:
+                return (GetAbility<GrenadeAbility>(abilityType))?.GrenadesRemaining ?? 0;
+            case AbilityType.Trap:
+                return (GetAbility<TrapAbility>(abilityType))?.TrapsRemaining ?? 0;
+            default:
+                return 0;
+        }
+    }
+
+    private int GetAbilityMaxCharges(AbilityType abilityType)
+    {
+        switch (abilityType)
+        {
+            case AbilityType.Grenade:
+                return 3;
+            case AbilityType.Trap:
+                return 2;
+            default:
+                return 1;
+        }
+    }
+}
+
+[System.Serializable]
+public class AbilityInfo
+{
+    public AbilityType type;
+    public bool isOnCooldown;
+    public float cooldownProgress;
+    public bool canActivate;
+    public bool isActive;
+    public int charges;
+    public int maxCharges;
 }

@@ -1,176 +1,113 @@
 using UnityEngine;
-using System.Collections;
 
 public abstract class BaseAbility : IAbility
 {
-    public AbilityData Data { get; private set; }
-    public AbilityState State { get; protected set; }
-    public float CooldownProgress => 1f - (cooldownTimer / Data.cooldown);
-
+    protected AbilityData data;
     protected Player player;
-    protected float cooldownTimer;
-    protected float durationTimer;
-    protected bool isOnCooldown;
+
+    protected float cooldownTimer = 0f;
+    protected bool isActive = false;
+    protected AbilityState currentState = AbilityState.Ready;
+
+    public AbilityData Data => data;
+    public AbilityState State => currentState;
+    public float CooldownProgress => GetCooldownProgress();
+    public bool IsOnCooldown => cooldownTimer > 0f;
+    public bool IsActive => isActive;
 
     public BaseAbility(AbilityData data, Player player)
     {
-        this.Data = data;
+        this.data = data;
         this.player = player;
-        State = AbilityState.Ready;
     }
 
     public virtual bool CanActivate()
     {
-        bool stateReady = State == AbilityState.Ready;
-        bool notOnCooldown = !isOnCooldown;
-        bool hasResources = HasRequiredResources();
-        bool meetsConditions = MeetsActivationConditions();
-
-        Debug.Log($"BaseAbility CanActivate - State: {State}, OnCooldown: {isOnCooldown}, HasResources: {hasResources}, MeetsConditions: {meetsConditions}");
-
-        return stateReady && notOnCooldown && hasResources && meetsConditions;
+        return !IsOnCooldown && !IsActive && MeetsActivationConditions();
     }
 
     public virtual void Activate()
     {
-        if (!CanActivate())
-        {
-            Debug.Log($"BaseAbility: Cannot activate {GetType().Name}");
-            return;
-        }
+        TryActivate();
+    }
 
-        Debug.Log($"BaseAbility: Activating {GetType().Name}");
-        State = AbilityState.Activating;
-        ConsumeResources();
-        PlayActivationEffects();
+    public virtual bool TryActivate()
+    {
+        if (!CanActivate()) return false;
 
-        if (Data.castTime > 0)
-        {
-            player.StartCoroutine(CastTimeCoroutine());
-        }
-        else
-        {
-            ExecuteAbility();
-        }
+        isActive = true;
+        currentState = AbilityState.Activating;
+        OnAbilityExecute();
+        currentState = AbilityState.Active;
+        return true;
     }
 
     public virtual void Update()
     {
-        HandleCooldown();
-        HandleDuration();
-        UpdateAbilityLogic();
+        if (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer <= 0f)
+            {
+                currentState = AbilityState.Ready;
+            }
+        }
+
+        if (isActive)
+            UpdateAbilityLogic();
+    }
+
+    public virtual void CompleteAbility()
+    {
+        if (isActive)
+        {
+            currentState = AbilityState.Completing;
+            OnAbilityComplete();
+            isActive = false;
+        }
     }
 
     public virtual void Cancel()
     {
-        if (State == AbilityState.Activating || State == AbilityState.Active)
+        if (isActive)
         {
-            State = AbilityState.Ready;
-            OnAbilityCancel();
+            currentState = AbilityState.Cancelled;
+            isActive = false;
         }
     }
 
     public virtual void Reset()
     {
-        State = AbilityState.Ready;
+        isActive = false;
         cooldownTimer = 0f;
-        durationTimer = 0f;
-        isOnCooldown = false;
-        OnAbilityReset();
+        currentState = AbilityState.Ready;
     }
 
-    protected virtual bool HasRequiredResources()
+    public void ResetCooldown()
     {
-        return true;
+        cooldownTimer = 0f;
+        if (currentState == AbilityState.Cooldown)
+            currentState = AbilityState.Ready;
     }
 
-    protected virtual bool MeetsActivationConditions()
+    public float GetCooldownProgress()
     {
-        return true;
+        if (data == null || data.cooldown <= 0f) return 0f;
+        return 1f - (cooldownTimer / data.cooldown);
     }
 
-    protected virtual void ConsumeResources()
+    protected void StartCooldown()
     {
-        // Override in derived classes for resource consumption
-    }
-
-    protected virtual void PlayActivationEffects()
-    {
-        // Override to prevent base class from spawning effects
-        // We handle all effects in EnableEffects() instead
-
-        // Keep only the audio if you want it to play immediately
-        if (Data.activationSound != null)
+        if (data != null)
         {
-            AudioSource.PlayClipAtPoint(Data.activationSound, player.transform.position);
+            cooldownTimer = data.cooldown;
+            currentState = AbilityState.Cooldown;
         }
     }
 
-    protected virtual IEnumerator CastTimeCoroutine()
-    {
-        float castTimer = 0f;
-        while (castTimer < Data.castTime)
-        {
-            castTimer += Time.deltaTime;
-            OnCastTimeUpdate(castTimer / Data.castTime);
-            yield return null;
-        }
-
-        ExecuteAbility();
-    }
-
-    protected virtual void ExecuteAbility()
-    {
-        State = AbilityState.Active;
-        durationTimer = Data.duration;
-        OnAbilityExecute();
-
-        if (Data.duration <= 0)
-        {
-            CompleteAbility();
-        }
-    }
-
-    protected virtual void CompleteAbility()
-    {
-        State = AbilityState.Cooldown;
-        cooldownTimer = Data.cooldown;
-        isOnCooldown = true;
-        OnAbilityComplete();
-    }
-
-    private void HandleCooldown()
-    {
-        if (isOnCooldown)
-        {
-            cooldownTimer -= Time.deltaTime;
-            if (cooldownTimer <= 0)
-            {
-                isOnCooldown = false;
-                State = AbilityState.Ready;
-            }
-        }
-    }
-
-    private void HandleDuration()
-    {
-        if (State == AbilityState.Active && Data.duration > 0)
-        {
-            durationTimer -= Time.deltaTime;
-            if (durationTimer <= 0)
-            {
-                CompleteAbility();
-            }
-        }
-    }
-
-    // Abstract methods for derived classes
-    protected abstract void UpdateAbilityLogic();
+    // Abstract methods for subclasses to implement
+    protected abstract bool MeetsActivationConditions();
     protected abstract void OnAbilityExecute();
+    protected abstract void UpdateAbilityLogic();
     protected abstract void OnAbilityComplete();
-
-    // Virtual methods for optional overrides
-    protected virtual void OnAbilityCancel() { }
-    protected virtual void OnAbilityReset() { }
-    protected virtual void OnCastTimeUpdate(float progress) { }
 }

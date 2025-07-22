@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public Player_Health health { get; private set; }
     public Ragdoll ragdoll { get; private set; }
     public Animator anim { get; private set; }
+    public StyleSystem styleSystem { get; private set; }
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
         weapon = GetComponent<Player_WeaponController>();
         weaponVisuals = GetComponent<Player_WeaponVisuals>();
         interaction = GetComponent<Player_Interaction>();
+        styleSystem = GetComponent<StyleSystem>();
 
         if (playerBody == null)
         {
@@ -44,6 +46,7 @@ public class Player : MonoBehaviour
         if (ragdoll == null) Debug.LogWarning("Player: Ragdoll not found.");
         if (health == null) Debug.LogWarning("Player: Player_Health not found.");
         if (movement == null) Debug.LogWarning("Player: Player_Movement not found.");
+        if (styleSystem == null) Debug.LogWarning("Player: StyleSystem not found.");
     }
 
     private void Start()
