@@ -15,11 +15,10 @@ public class Player_WeaponController : MonoBehaviour
     private bool weaponReady;
     private bool isShooting;
 
-    [Header("Bullet details")]
-    [SerializeField] private float bulletImpactForce = 100;
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float bulletSpeed;
-
+    [Header("Bullet Details")]
+    [SerializeField] public float bulletImpactForce = 100;
+    [SerializeField] public GameObject bulletPrefab;
+    [SerializeField] public float bulletSpeed = 20;
 
     [SerializeField] private Transform weaponHolder;
 
