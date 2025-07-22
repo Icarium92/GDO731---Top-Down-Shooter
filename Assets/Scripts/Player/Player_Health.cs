@@ -55,5 +55,7 @@ public class Player_Health : HealthController
         // Hide the health bar
         if (player.healthBar != null)
             player.healthBar.gameObject.SetActive(false);
+
+        OnPlayerDeath?.Invoke();
     }
 }
