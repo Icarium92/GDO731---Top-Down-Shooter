@@ -10,17 +10,17 @@ public class Player_WeaponController : MonoBehaviour
     private Player player;
     private const float REFERENCE_BULLET_SPEED = 20;
 
-    [Header("Weapon Data")]
     [SerializeField] private Weapon_Data defaultWeaponData;
-    [SerializeField] private Weapon currentWeapon;
-
-    private bool weaponReady = true;
+    public Weapon currentWeapon; //changed to public so UI can access current data 
+    private bool weaponReady;
     private bool isShooting;
 
-    [Header("Bullet Details")]
-    [SerializeField] public float bulletImpactForce = 100;
-    [SerializeField] public GameObject bulletPrefab;
-    [SerializeField] public float bulletSpeed = 20;
+    [Header("Bullet details")]
+    [SerializeField] private float bulletImpactForce = 100;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float bulletSpeed;
+
+
     [SerializeField] private Transform weaponHolder;
 
     [Header("Inventory")]

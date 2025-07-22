@@ -16,4 +16,9 @@ public class HitBox : MonoBehaviour, IDamagable
     {
      
     }
+
+    public Enemy_Melee EnemyHit()
+    {
+        return GetComponentInParent<Enemy_Melee>();
+    }
 }

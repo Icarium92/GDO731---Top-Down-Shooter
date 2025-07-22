@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player_Health : HealthController
 {
@@ -8,6 +9,12 @@ public class Player_Health : HealthController
     private bool isInvincible = false;
 
     private Player player;
+
+    public UnityEvent OnPlayerDeath;
+    public UnityEvent OnPlayerHit;
+
+    public bool isDead { get; private set; }
+    private bool isInvincible = false; // NEW: For ability system integration
 
     protected override void Awake()
     {

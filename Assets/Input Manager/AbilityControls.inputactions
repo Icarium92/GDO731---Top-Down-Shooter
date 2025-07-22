@@ -1,0 +1,74 @@
+{
+    "name": "AbilityControls",
+    "maps": [
+        {
+            "name": "Abilities",
+            "id": "f0e4a4cd-4449-4181-860a-872ca4cb696f",
+            "actions": [
+                {
+                    "name": "Ability",
+                    "type": "Button",
+                    "id": "c7bb63cd-771f-4385-82f3-756290bff3ca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability2",
+                    "type": "Button",
+                    "id": "c8ce31e0-11e7-48ae-8c31-8d6d9c1ed0f7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GamePause",
+                    "type": "Button",
+                    "id": "d650f37e-2e56-4d2d-84d2-b7f1bd7dfd16",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0d4aea68-9da4-41da-8c26-e2f57b83535d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5cd755f8-ebcd-46cb-987f-d4b31b9a30b6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a9526bf-162e-416e-aebf-fc28129c9255",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GamePause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
