@@ -7425,6 +7425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 809282584}
   - component: {fileID: 809282583}
+  - component: {fileID: 809282585}
   m_Layer: 5
   m_Name: HealthBarPanel
   m_TagString: Untagged
@@ -7504,6 +7505,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &809282585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809282582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f546594d4fd7b24fb229ba39b3f93ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerHealth: {fileID: 1746550282}
+  Slider: {fileID: 809282583}
 --- !u!1001 &821702331
 PrefabInstance:
   m_ObjectHideFlags: 0
