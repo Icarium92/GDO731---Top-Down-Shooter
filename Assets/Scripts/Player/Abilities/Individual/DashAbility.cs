@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class DashAbility : BaseAbility
 {
     [Header("Dash Settings")]
-    private float dashSpeed = 20f;
-    private float dashDistance = 5f;
+    private float dashSpeed = 10f;
+    private float dashDistance = 2.5f;
     private LayerMask dashObstacles = -1;
 
     private CharacterController characterController;
