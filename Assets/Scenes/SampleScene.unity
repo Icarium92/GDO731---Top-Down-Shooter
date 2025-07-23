@@ -8588,7 +8588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57b792a60fadfce408436e2f4199892a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ability: {fileID: 0}
+  Ability: {fileID: 1739042113}
   CooldownTextComponent: {fileID: 228264701}
   AbilityIcon: {fileID: 1683653083}
   AbilityPanel: {fileID: 1119779058}
@@ -11407,7 +11407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1168770400
 Transform:
   m_ObjectHideFlags: 0
@@ -17605,6 +17605,61 @@ PrefabInstance:
       addedObject: {fileID: 1905729476}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ba7ee7fc507d8d4494d11730c1246da, type: 3}
+--- !u!1 &1739042111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1739042112}
+  - component: {fileID: 1739042113}
+  m_Layer: 0
+  m_Name: DashTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1739042112
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739042111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1779564169}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1739042113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739042111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f7e85b13c636a40a9de709317234af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Dash
+  Cooldown: 1
+  CooldownTimer: 1
+  IsOnCooldown: 0
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  AbilityCountMax: 100
+  AbilityCount: 100
+  HasAbilityCount: 0
+  AbilityPrefab: {fileID: 0}
 --- !u!1 &1743475052
 GameObject:
   m_ObjectHideFlags: 0
@@ -18146,6 +18201,7 @@ MonoBehaviour:
   abilities:
   - {fileID: 379527393}
   - {fileID: 603473323}
+  - {fileID: 1739042113}
   testTransform: {fileID: 430237535}
   fixedTransform: {fileID: 0}
   onStyleIncrease:
@@ -18232,6 +18288,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d650f37e-2e56-4d2d-84d2-b7f1bd7dfd16
     m_ActionName: 'Abilities/GamePause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1746550286}
+        m_TargetAssemblyTypeName: AbilityHandler, Assembly-CSharp
+        m_MethodName: OnAbility3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f3ea3117-5386-41f7-8d7f-6d653fa85d98
+    m_ActionName: 'Abilities/Ability3[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Abilities
@@ -18740,6 +18812,7 @@ Transform:
   - {fileID: 379527392}
   - {fileID: 603473322}
   - {fileID: 430237535}
+  - {fileID: 1739042112}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1781693768
