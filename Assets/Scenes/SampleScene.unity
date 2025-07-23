@@ -19007,7 +19007,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f6ccd1bf121bf4b93b10cdcbf6ae59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableAbilities: []
+  availableAbilities:
+  - {fileID: 11400000, guid: b1d131851e096b54e8df8f01335b071c, type: 2}
   dashKey: 32
   grenadeKey: 103
   trapKey: 116
@@ -27798,6 +27799,7 @@ SceneRoots:
   - {fileID: 972752177}
   - {fileID: 467885446}
   - {fileID: 72461320}
+  - {fileID: 1779564169}
   - {fileID: 952644914}
   - {fileID: 376060152}
   - {fileID: 1746550274}
@@ -27805,7 +27807,6 @@ SceneRoots:
   - {fileID: 1567743234}
   - {fileID: 1242398043}
   - {fileID: 917049980}
-  - {fileID: 1779564169}
   - {fileID: 654589061}
   - {fileID: 3503248393496629937}
   - {fileID: 1746059026}
