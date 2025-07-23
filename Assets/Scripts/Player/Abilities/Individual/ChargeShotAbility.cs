@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ChargeShotAbility : BaseAbility
 {
-    private SimpleChargeShot chargeShotComponent;
+    private Player_ChargeShot chargeShotComponent;
     private Player_WeaponController weaponController;
     private StyleSystem styleSystem;
     private bool isActivated = false;
@@ -12,7 +12,7 @@ public class ChargeShotAbility : BaseAbility
 
     public ChargeShotAbility(AbilityData data, Player player) : base(data, player)
     {
-        chargeShotComponent = player.GetComponent<SimpleChargeShot>();
+        chargeShotComponent = player.GetComponent<Player_ChargeShot>();
         weaponController = player.GetComponent<Player_WeaponController>();
         styleSystem = player.styleSystem;
 

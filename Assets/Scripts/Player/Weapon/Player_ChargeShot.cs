@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SimpleChargeShot : MonoBehaviour
+public class Player_ChargeShot : MonoBehaviour
 {
     [Header("Heavy Attack Settings")]
     public float maxChargeTime = 2f;

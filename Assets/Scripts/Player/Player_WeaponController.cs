@@ -256,7 +256,7 @@ public class Player_WeaponController : MonoBehaviour
     private void OnHeavyAttackStarted()
     {
         Debug.Log("Heavy Attack Started!"); // ADD THIS
-        var chargeShot = GetComponent<SimpleChargeShot>();
+        var chargeShot = GetComponent<Player_ChargeShot>();
         if (chargeShot != null)
             chargeShot.StartCharging();
     }
@@ -264,7 +264,7 @@ public class Player_WeaponController : MonoBehaviour
     private void OnHeavyAttackReleased()
     {
         Debug.Log("Heavy Attack Released!"); // ADD THIS
-        var chargeShot = GetComponent<SimpleChargeShot>();
+        var chargeShot = GetComponent<Player_ChargeShot>();
         if (chargeShot != null)
             chargeShot.FireChargedShot();
     }

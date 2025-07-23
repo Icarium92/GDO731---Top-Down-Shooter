@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ChargeBarUI : MonoBehaviour
 {
     public Slider chargeBarSlider;          // Drag your ChargeBarSlider here
-    private SimpleChargeShot chargeShot;
+    private Player_ChargeShot chargeShot;
 
     void Start()
     {
@@ -14,7 +14,7 @@ public class ChargeBarUI : MonoBehaviour
             chargeBarSlider = GetComponentInChildren<Slider>();
         }
 
-        chargeShot = FindFirstObjectByType<SimpleChargeShot>();
+        chargeShot = FindFirstObjectByType<Player_ChargeShot>();
         chargeBarSlider.gameObject.SetActive(false);
         chargeBarSlider.value = 0f;
     }
