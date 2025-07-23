@@ -109,7 +109,8 @@ public class AbilityHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            UseAbilityFixedPosition(2);
+            Debug.Log("ability3");
+            UseAbilityRadius(2);
         }
     }
 
