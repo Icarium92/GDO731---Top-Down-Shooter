@@ -23,6 +23,7 @@ public class RuntimeManager : MonoBehaviour
     private void Awake()
     {
         IsPaused = false;
+        Cursor.visible = false;
     }
 
     private IEnumerator EndStage()
@@ -35,12 +36,14 @@ public class RuntimeManager : MonoBehaviour
     {
         Time.timeScale = 0;
         IsPaused = true;
+        Cursor.visible = true;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
         IsPaused = false;
+        Cursor.visible = false; 
     }
 
     public void QuitGame()
