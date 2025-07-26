@@ -13,6 +13,10 @@ public class OldIconPanelUIAbility : MonoBehaviour
     public Image AbilityIcon;
     public Image AbilityPanel;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource pointerEnterSFX;
+    [SerializeField] private AudioSource pointerDownSFX;
+
     private void Update()
     {
         DisplayIcon();
@@ -39,4 +43,9 @@ public class OldIconPanelUIAbility : MonoBehaviour
         }
     }
 
+    public void AssignAudioSource()
+    {
+        pointerEnterSFX = GameObject.Find("UI_PointerEnter").GetComponent<AudioSource>();
+        pointerDownSFX = GameObject.Find("UI_PointerDown").GetComponent<AudioSource>();
+    }
 }
