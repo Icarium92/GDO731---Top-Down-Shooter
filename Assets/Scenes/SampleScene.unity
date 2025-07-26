@@ -6015,7 +6015,7 @@ GameObject:
   - component: {fileID: 591339328}
   - component: {fileID: 591339329}
   m_Layer: 0
-  m_Name: StyleIncrease (1)
+  m_Name: StyleDecrease
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
