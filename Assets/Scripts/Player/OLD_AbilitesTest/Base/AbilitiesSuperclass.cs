@@ -14,4 +14,6 @@ public class AbilitiesSuperclass : MonoBehaviour
     public int AbilityCountMax;
     public int AbilityCount;
     public bool HasAbilityCount;
+
+    public AudioSource AbilityAudioSource;
 }

@@ -130,6 +130,10 @@ public class AbilityHandler : MonoBehaviour
                 abilities[index].Ability(testTransform);
                 abilities[index].IsOnCooldown = true;
                 abilities[index].AbilityCount--;
+                if(abilities[index].AbilityAudioSource != null)
+                {
+                    abilities[index].AbilityAudioSource.Play();
+                }
             }
         }
 
