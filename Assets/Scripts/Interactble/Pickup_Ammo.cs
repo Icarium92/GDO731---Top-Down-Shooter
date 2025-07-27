@@ -58,6 +58,8 @@ public class Pickup_Ammo : Interactable
             return;
 
         weapon.totalReserveAmmo += amount;
+        //test to account for visual bug 
+        weaponController.UpdateWeaponUI();
     }
     private void SetupBoxModel()
     {
