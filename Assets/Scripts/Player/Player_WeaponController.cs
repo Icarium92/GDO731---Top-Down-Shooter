@@ -162,6 +162,8 @@ public class Player_WeaponController : MonoBehaviour
         currentWeapon.bulletsInMagazine--;
         UpdateWeaponUI();
 
+        player.weaponVisuals.CurrentWeaponModel().fireSFX.Play();
+
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, GunPoint());
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
 
@@ -180,6 +182,7 @@ public class Player_WeaponController : MonoBehaviour
         SetWeaponReady(false);
         player.weaponVisuals.PlayReloadAnimation();
 
+        player.weaponVisuals.CurrentWeaponModel().reloadSFX.Play();
         // We do the refill of the bullets in Player_AnimationEvents
         // We UpdateWeaponUI in Player_AnimationEvents as well
     }
