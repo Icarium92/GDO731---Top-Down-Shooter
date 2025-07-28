@@ -111,7 +111,12 @@ public class Player_WeaponController : MonoBehaviour
     public void SetWeaponReady(bool ready)
     {
         weaponReady = ready;
+
+        if (ready)
+            player.sound.weaponReady.Play();
     }
+
+    public bool WeaponReady() => weaponReady;
 
     #endregion
 
@@ -215,8 +220,6 @@ public class Player_WeaponController : MonoBehaviour
     public Weapon CurrentWeapon() => currentWeapon;
 
     public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
-
-    public bool WeaponReady() => weaponReady;
 
     private void TriggerEnemyDodge()
     {

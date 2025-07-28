@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     public Animator anim { get; private set; }
     public StyleSystem styleSystem { get; private set; }
 
+    public Player_SoundFX sound { get; private set; }
+
     private void Awake()
     {
         controls = new PlayerControls();
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
         weaponVisuals = GetComponent<Player_WeaponVisuals>();
         interaction = GetComponent<Player_Interaction>();
         styleSystem = GetComponent<StyleSystem>();
+        sound = GetComponent<Player_SoundFX>();
 
         if (playerBody == null)
         {

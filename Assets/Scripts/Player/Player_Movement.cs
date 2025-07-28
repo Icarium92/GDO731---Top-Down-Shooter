@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+
 
 public class Player_Movement : MonoBehaviour
 {
@@ -21,9 +23,17 @@ public class Player_Movement : MonoBehaviour
     private bool isRunning;
     private bool movementEnabled = true; // NEW: For ability system integration
 
+    private AudioSource walkSFX;
+    private AudioSource runSFX;
+    private bool canPlayFootsteps;
+
     private void Start()
     {
         player = GetComponent<Player>();
+
+        walkSFX = player.sound.walkSFX;
+        runSFX = player.sound.runSFX;
+        Invoke(nameof(AllowfootstepsSFX), 1f);
 
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
@@ -74,9 +84,30 @@ public class Player_Movement : MonoBehaviour
 
         if (movementDirection.magnitude > 0)
         {
+            PlayFootstepsSFX();
+
             characterController.Move(movementDirection * Time.deltaTime * speed);
         }
     }
+
+    private void PlayFootstepsSFX()
+    {
+        if (canPlayFootsteps == false)
+            return;
+
+        if (isRunning)
+        {
+            if (runSFX.isPlaying == false)
+                runSFX.Play();
+        }
+        else
+        {
+            if (walkSFX.isPlaying == false)
+                walkSFX.Play();
+        }
+    }
+
+    private void AllowfootstepsSFX() => canPlayFootsteps = true;
 
     private void ApplyGravity()
     {
