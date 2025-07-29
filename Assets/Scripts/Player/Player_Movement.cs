@@ -107,6 +107,12 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
+    private void StopFootstepsSFX()
+    {
+        walkSFX.Stop();
+        runSFX.Stop();
+    }
+
     private void AllowfootstepsSFX() => canPlayFootsteps = true;
 
     private void ApplyGravity()
@@ -131,13 +137,18 @@ public class Player_Movement : MonoBehaviour
         controls = player.controls;
 
         controls.Character.Movement.performed += context => moveInput = context.ReadValue<Vector2>();
-        controls.Character.Movement.canceled += context => moveInput = Vector2.zero;
+        controls.Character.Movement.canceled += context =>
+        {
+            StopFootstepsSFX();
+            moveInput = Vector2.zero;
+        };
 
         controls.Character.Run.performed += context =>
         {
             speed = runSpeed;
             isRunning = true;
         };
+
 
         controls.Character.Run.canceled += context =>
         {
