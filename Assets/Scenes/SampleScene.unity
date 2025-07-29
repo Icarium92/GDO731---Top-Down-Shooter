@@ -4309,7 +4309,7 @@ GameObject:
   - component: {fileID: 399344781}
   - component: {fileID: 399344782}
   m_Layer: 8
-  m_Name: SFX_Reload (1)
+  m_Name: SFX_Reload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6324,8 +6324,8 @@ MonoBehaviour:
   holdType: 2
   gunPoint: {fileID: 23446323}
   holdPoint: {fileID: 2078607759}
-  fireSFX: {fileID: 0}
-  reloadSFX: {fileID: 0}
+  fireSFX: {fileID: 1747360188}
+  reloadSFX: {fileID: 399344782}
 --- !u!1001 &533294138
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12459,8 +12459,8 @@ MonoBehaviour:
   holdType: 1
   gunPoint: {fileID: 1414887453}
   holdPoint: {fileID: 166916586}
-  fireSFX: {fileID: 0}
-  reloadSFX: {fileID: 0}
+  fireSFX: {fileID: 1194332333}
+  reloadSFX: {fileID: 461877546}
 --- !u!1001 &1080050687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14302,8 +14302,8 @@ MonoBehaviour:
   holdType: 1
   gunPoint: {fileID: 1405798155}
   holdPoint: {fileID: 1658848704}
-  fireSFX: {fileID: 0}
-  reloadSFX: {fileID: 0}
+  fireSFX: {fileID: 1620418644}
+  reloadSFX: {fileID: 1305203632}
 --- !u!1001 &1202154214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21178,7 +21178,6 @@ MonoBehaviour:
     magazineCapacity: 50
     totalReserveAmmo: 6161
   weaponPickupPrefab: {fileID: 8396333148451498682, guid: 69c7326fdde85914a85f03d1501aca1c, type: 3}
-  testAudio: {fileID: 408660786}
 --- !u!114 &1746550278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21491,7 +21490,7 @@ GameObject:
   - component: {fileID: 1747360187}
   - component: {fileID: 1747360188}
   m_Layer: 8
-  m_Name: SFX_Fire (1)
+  m_Name: SFX_Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24234,8 +24233,8 @@ MonoBehaviour:
   holdType: 3
   gunPoint: {fileID: 1590725149}
   holdPoint: {fileID: 1155908563}
-  fireSFX: {fileID: 0}
-  reloadSFX: {fileID: 0}
+  fireSFX: {fileID: 1119742414}
+  reloadSFX: {fileID: 108296097}
 --- !u!1 &1976757042 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2946893295553797576, guid: e5babd777c205ae4e9250c59ae3ddda9, type: 3}
