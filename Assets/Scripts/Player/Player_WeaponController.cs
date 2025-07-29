@@ -28,8 +28,8 @@ public class Player_WeaponController : MonoBehaviour
     [SerializeField] private GameObject weaponPickupPrefab;
 
     //test for audio implementation
-    [Header("Audio")]
-    [SerializeField] private AudioSource testAudio;
+    //[Header("Audio")]
+    //[SerializeField] private AudioSource testAudio;
 
     private void Start()
     {
@@ -159,7 +159,7 @@ public class Player_WeaponController : MonoBehaviour
         TriggerEnemyDodge();
 
         //test for audio implementation
-        AudioManager.instance.PlaySFX(testAudio);
+        //AudioManager.instance.PlaySFX(testAudio);
     }
 
     private void FireSingleBullet()
