@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class DashAbility : BaseAbility
 {
     [Header("Dash Settings")]
-    private float dashSpeed = 10f;
-    private float dashDistance = 2.5f;
+    private float dashSpeed = 15f;       // Default dash speed
+    private float dashDistance = 3f;   // Default dash distance
     private LayerMask dashObstacles = -1;
 
     private CharacterController characterController;
@@ -23,6 +23,9 @@ public class DashAbility : BaseAbility
     private GameObject activeParticleEffect;
     private List<ParticleSystem> activeParticleSystems = new List<ParticleSystem>();
 
+    // AudioSource reference for dash SFX
+    private AudioSource dashSFX;
+
     public bool IsDashing => isDashing;
 
     public DashAbility(AbilityData data, Player player, SkillManager skillManager) : base(data, player)
@@ -34,9 +37,19 @@ public class DashAbility : BaseAbility
         movement = player.movement;
         health = player.health;
 
-        // Set default values - these can be overridden via AbilityData or inspector
-        dashSpeed = 20f;
-        dashDistance = 5f;
+        // Assign dashSFX from Player_SoundFX component
+        if (player.sound != null)
+        {
+            dashSFX = player.sound.dashSFX;
+            if (dashSFX == null)
+                Debug.LogWarning("DashAbility: dashSFX is missing in Player_SoundFX!");
+        }
+        else
+        {
+            Debug.LogWarning("DashAbility: Player_SoundFX component not found on player!");
+        }
+
+        // Set default dashObstacles layer mask
         dashObstacles = LayerMask.GetMask("Default", "Ground", "Wall");
 
         Debug.Log($"DashAbility created - Distance: {dashDistance}, Speed: {dashSpeed}, Cooldown: {data.cooldown}");
@@ -66,6 +79,7 @@ public class DashAbility : BaseAbility
         Debug.Log("Executing Dash Ability!");
         CalculateDashDirection();
         CalculateActualDashDistance();
+
         player.StartCoroutine(PerformDash());
     }
 
@@ -88,8 +102,6 @@ public class DashAbility : BaseAbility
         // Re-enable movement
         if (movement != null)
         {
-            // Check if your Player_Movement has these methods
-            // If not, remove or modify these calls
             try
             {
                 var enableMethod = movement.GetType().GetMethod("SetMovementEnabled");
@@ -204,7 +216,7 @@ public class DashAbility : BaseAbility
             }
         }
 
-        // Audio
+        // Audio clip from AbilityData (optional)
         if (data.activationSound != null)
         {
             AudioSource.PlayClipAtPoint(data.activationSound, player.transform.position);
@@ -282,6 +294,12 @@ public class DashAbility : BaseAbility
         }
 
         EnableEffects();
+
+        // ==== Play the dash SFX here ====
+        if (dashSFX != null && !dashSFX.isPlaying)
+        {
+            dashSFX.Play();
+        }
 
         // Perform the dash movement
         float dashTime = currentDashDistance / dashSpeed;
