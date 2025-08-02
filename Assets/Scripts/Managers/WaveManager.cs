@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.AI; // IMPORTANT: Needed for NavMesh stuff
 
-// WaveManager.cs - With startup delay to sync with pool
+// WaveManager.cs - With NavMesh-compliant spawning
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private WaveData waveData;
@@ -81,7 +82,20 @@ public class WaveManager : MonoBehaviour
             if (enemy == null) { Debug.LogError("EnemyPool returned null!"); continue; }
 
             Vector3 spawnPos = waveData.spawnPoints[Random.Range(0, waveData.spawnPoints.Length)];
-            enemy.transform.position = spawnPos;
+
+            // --- NAVMESH FIX BEGINS ---
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(spawnPos, out hit, 2.0f, NavMesh.AllAreas))
+            {
+                enemy.transform.position = hit.position;
+            }
+            else
+            {
+                Debug.LogWarning($"No NavMesh found near enemy spawn {spawnPos} for wave {currentWave}!");
+                enemy.transform.position = spawnPos;
+            }
+            // --- NAVMESH FIX ENDS ---
+
             enemy.transform.SetParent(enemyParent);
             enemy.SetActive(true);
 
@@ -118,7 +132,20 @@ public class WaveManager : MonoBehaviour
         if (boss == null) { Debug.LogError("EnemyPool returned null for boss!"); return; }
 
         Vector3 spawnPos = waveData.spawnPoints[Random.Range(0, waveData.spawnPoints.Length)];
-        boss.transform.position = spawnPos;
+
+        // --- NAVMESH FIX BEGINS ---
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(spawnPos, out hit, 2.0f, NavMesh.AllAreas))
+        {
+            boss.transform.position = hit.position;
+        }
+        else
+        {
+            Debug.LogWarning($"No NavMesh found near boss spawn {spawnPos} for wave {currentWave}!");
+            boss.transform.position = spawnPos;
+        }
+        // --- NAVMESH FIX ENDS ---
+
         boss.transform.SetParent(enemyParent);
         boss.SetActive(true);
 
