@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour
     public Enemy_Visuals visuals { get; private set; }
     public Enemy_Health health { get; private set; }
     public Ragdoll ragdoll { get; private set; }
+    public AudioManager audioManager { get; private set; }
 
     protected virtual void Awake()
     {
@@ -63,6 +64,8 @@ public class Enemy : MonoBehaviour
             healthBar.maxValue = health.maxHealth;
             healthBar.value = health.CurrentHealth;
         }
+
+        audioManager = AudioManager.instance;
     }
 
     protected virtual void Update()
