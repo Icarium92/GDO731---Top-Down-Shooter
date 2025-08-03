@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f3245ab1927888e4c943fc97262db467
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _FogVariationTexture: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01,
+      type: 3}
+  - _FogVariationTexture: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01,
+      type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
