@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - FX Block Zone
+  - TaggedCamera
   layers:
   - Default
   - TransparentFX
