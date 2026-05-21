@@ -70,6 +70,11 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Compiled game builds and zip archives
+IGO721*/
+IGO731*/
+*.zip
+
 # Packed Addressables
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 
