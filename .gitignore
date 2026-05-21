@@ -64,6 +64,9 @@ sysinfo.txt
 *.unitypackage.meta
 *.app
 
+# Local portfolio notes should stay out of source control.
+/PROJECT_PORTFOLIO_SUMMARY.md
+
 # Crashlytics generated file
 crashlytics-build.properties
 
